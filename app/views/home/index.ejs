@@ -1,0 +1,16 @@
+<% include ../layout/header %>
+
+<div class="hero-unit">
+    <h1>FT Analytics API</h1>
+    <p>An API for Analytics!</p>
+</div>
+
+<% if (apis.length > 0) { %>
+<ul>
+    <% apis.forEach(function (api) { %>
+    <li><%= api.name %></li>
+    <% }) %>
+</ul>
+<% } %>
+
+<% include ../layout/footer %>

@@ -1,0 +1,28 @@
+{
+    "name": "ft-analytics-api",
+    "version": "0.0.1",
+    "author" : "Mark Stephens",
+    "description" : "An internal API from our Analytics data.",
+    "private": true,
+
+    "scripts": {
+        "start": "node app.js"
+    },
+
+    "repository": {
+        "type": "git",
+        "url": ""
+    },
+
+    "dependencies": {
+        "mongoose" : "3.6.x",
+        "express": "3.3.x",
+        "ejs": "*"
+    },
+
+    "engines": {
+        "node": "0.10.x",
+        "npm": "1.2.x"
+    }
+
+}

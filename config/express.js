@@ -2,6 +2,7 @@ var express = require('express');
 
 module.exports = function (app, env, config) {
 
+    app.set('title', config.app.name);
     app.set('port', process.env.PORT || 3000);
     app.set('views', config.root + '/app/views');
     app.set('view engine', 'ejs');
@@ -12,6 +13,11 @@ module.exports = function (app, env, config) {
     app.use(express.methodOverride());
     //app.use(express.cookieParser('your secret here'));
     //app.use(express.session());
+
+    // View helpers
+    app.use(require('../app/helpers/general'));
+    app.use(require('../app/helpers/forms'));
+
     app.use(app.router);
     app.use(express.static(config.root + '/public'));
 

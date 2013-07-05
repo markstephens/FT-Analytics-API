@@ -1,0 +1,52 @@
+<div class="control-group">
+    <%-label_for('api','title', {label: 'Title'}) %>
+    <div class="controls">
+        <%-text_field_for('api','title', api.title, { placeholder: 'Title', required: true }) %>
+        <span class="help-block">Give the API a name.</span>
+    </div>
+</div>
+
+<div class="control-group">
+    <%-label_for('api','url', {label: 'URL'}) %>
+    <div class="controls">
+        <div class="input-append">
+            <%-text_field_for('api','url', api.url, { placeholder: 'URL', required: true }) %>
+            <button class="btn" type="button">Test</button>
+        </div>
+        <span class="help-block">The URL of the API within iJento.</span>
+    </div>
+</div>
+
+<div class="control-group">
+    <label for="api_description" class="control-label">Description</label>
+    <div class="controls">
+        <textarea id="api_description" name="api[description]" placeholder="Title" rows="3"><%=api.description%></textarea>
+        <span class="help-block">What the API does.</span>
+    </div>
+</div>
+
+<div class="control-group">
+    <div class="controls">
+        <fieldset>
+            <legend>Columns</legend>
+
+            <label class="checkbox">
+                <input type="checkbox" name="api[columns][]" value=""> Column 1
+            </label>
+
+            <label class="checkbox">
+                <input type="checkbox" name="api[columns][]" value=""> Column 2
+            </label>
+
+            <label class="checkbox">
+                <input type="checkbox" name="api[columns][]" value=""> Column 3
+            </label>
+
+            <div class="form-inline input-append">
+                <label for="api_new_column" class="inline hide">New column</label>
+                <input type="text" id="api_new_column" name="api[new_column]" placeholder="New column" />
+                <button class="btn" type="button">Add</button>
+            </div>
+        </fieldset>
+    </div>
+</div>

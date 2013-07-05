@@ -11,6 +11,7 @@ var mongoose = require('mongoose'),
  */
 var APISchema = new Schema({
     title: {type : String, 'default' : '', trim : true},
+    url: {type : String, 'default' : '', trim : true},
     description: {type : String, 'default' : '', trim : true},
 
     columns: [{
@@ -24,12 +25,28 @@ var APISchema = new Schema({
 /**
  * Validations
  */
-APISchema.path('title').validate(function (title) {
-    return title.length > 0;
-}, 'API title cannot be blank');
+APISchema.path('title').required(true);
+APISchema.path('url').required(true).validate(function (url) {
+    return /^(http?:\/\/)?([\da-z\.\-]+)\.([a-z\.]{2,6})([\/\w \.\-]*)*\/?$/.test(url);
+}, 'API url must be a valid URL.');
 
 /**
- * Statics
+ * Virtuals
  */
+
+APISchema.virtual('newcolumn')
+    .set(function (column) {
+        this.columns.push(column);
+    })
+    .get(function () { return ''; });
+
+/**
+ * Before save callback
+ */
+APISchema.pre('save', function (next) {
+    console.log('Before save', this.columns);
+
+    next();
+});
 
 mongoose.model('API', APISchema);

@@ -1,0 +1,26 @@
+<% include ../layout/header %>
+
+<div class="page-header">
+    <h1>New API</h1>
+</div>
+
+<form action="/apis/new" method="post" class="form-horizontal">
+
+    <input type="hidden" name="api[_id]" value="<%=api._id%>" />
+
+    <fieldset>
+        <legend>New API</legend>
+
+        <% include _form %>
+
+        <div class="form-actions">
+            <p><button type="submit" class="btn btn-success">Create API</button></p>
+            <p><a href="/apis" class="btn btn-danger btn-mini">Back</a></p>
+        </div>
+
+    </fieldset>
+</form>
+
+
+
+<% include ../layout/footer %>

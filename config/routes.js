@@ -1,13 +1,23 @@
-var homeController = require('../app/controllers/home');
+var homeController = require('../app/controllers/home'),
+    apisController = require('../app/controllers/apis');
 
-module.exports = function (app) {
-    // Home pages
-    app.get('/', homeController.index);
-    app.get('/show/:api', homeController.show);
+var routes = function (app) {
+
+    function crudRoutes(prefix, controller) {
+        app.get((new RegExp('/' + prefix + '/([0-9a-z]+)/edit')), controller.update);
+        app.post((new RegExp('/' + prefix + '/([0-9a-z]+)/edit')), controller.update);
+        app.get('/' + prefix + '/new', controller.create);
+        app.post('/' + prefix + '/new', controller.create);
+        app.get((new RegExp('/' + prefix + '/([0-9a-z]+)')), controller.show);
+        app.delete((new RegExp('/' + prefix + '/([0-9a-z]+)')), controller.destroy);
+        app.get('/' + prefix, controller.index);
+    }
 
     // API
-    // ...
+    crudRoutes('apis', apisController);
 
-    // Admin
-    // ...
+    // Home pages
+    app.get('/', homeController.index);
 };
+
+module.exports = routes;

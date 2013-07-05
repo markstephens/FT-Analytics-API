@@ -1,0 +1,19 @@
+<% include ../layout/header %>
+
+<div class="page-header">
+    <h1>APIs</h1>
+</div>
+
+<p><a href="/apis/new" class="btn btn-primary">New API</a></p>
+
+<% if (apis.length > 0) { %>
+<ul>
+    <% apis.forEach(function (api) { %>
+    <li><%= api.name %></li>
+    <% }) %>
+</ul>
+<% } %>
+
+<p><a href="/apis/new" class="btn btn-primary">New API</a></p>
+
+<% include ../layout/footer %>

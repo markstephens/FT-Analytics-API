@@ -6,13 +6,13 @@ var express = require('express'),
     fs = require('fs'),
     env = process.env.NODE_ENV || 'development',
     config = require('./config/config')[env],
-    mongoose = require('mongoose');
+    mongoose = require('mongoose'),
+    models_path = config.root + '/app/models';
 
 // db connection
 mongoose.connect(config.db);
 
 // Load models
-var models_path = config.root + '/app/models';
 fs.readdirSync(models_path).forEach(function (file) {
     if (file.indexOf('.js') !== -1) {
         require(models_path + '/' + file);

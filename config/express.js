@@ -1,4 +1,5 @@
-var express = require('express');
+var express = require('express'),
+    fs = require('fs');
 
 module.exports = function (app, env, config) {
 
@@ -14,9 +15,13 @@ module.exports = function (app, env, config) {
     //app.use(express.cookieParser('your secret here'));
     //app.use(express.session());
 
-    // View helpers
-    app.use(require('../app/helpers/general'));
-    app.use(require('../app/helpers/forms'));
+    // Load view helpers
+    var helpers_path = config.root + '/app/helpers';
+    fs.readdirSync(helpers_path).forEach(function (file) {
+        if (file.indexOf('.js') !== -1) {
+            app.use(require(helpers_path + '/' + file));
+        }
+    });
 
     app.use(app.router);
     app.use(express.static(config.root + '/public'));

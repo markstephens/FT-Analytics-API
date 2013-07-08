@@ -8,7 +8,7 @@ function generalHelpers(req, res, next) {
 
     // Is the supplied link the current url?
     function isActive(link) {
-        return req.url.indexOf(link) !== -1;
+        return (new RegExp(link)).test(req.url);
     }
 
     res.locals({

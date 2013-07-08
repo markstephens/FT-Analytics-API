@@ -1,3 +1,5 @@
+var merge = require('../../util/merge');
+
 function formHelpers(req, res, next) {
 
     if (typeof req.flash !== 'undefined') {
@@ -7,38 +9,12 @@ function formHelpers(req, res, next) {
         res.locals.warning = req.flash('warning');
     }
 
-    function clone(target, options) {
-        if (!options) {
-            options = target;
-            target = {};
-        }
-
-        var name, src, copy;
-
-        for (name in options) {
-            src = target[name];
-            copy = options[name];
-
-            // Prevent never-ending loop
-            if (target === copy) {
-                continue;
-            }
-
-            // Gets rid of missing values too
-            if (typeof copy !== "undefined" && copy !== null) {
-                target[name] = copy;
-            }
-        }
-
-        return target;
-    }
-
     function label_for(model, field, options) {
         if (typeof options === "undefined") {
             options = {};
         }
 
-        options = clone({
+        options = merge.object({
             label : field,
             'class' : 'control-label'
         }, options);
@@ -51,7 +27,7 @@ function formHelpers(req, res, next) {
             options = {};
         }
 
-        options = clone({
+        options = merge.object({
             type : 'text',
             placeholder : field,
             required : false,

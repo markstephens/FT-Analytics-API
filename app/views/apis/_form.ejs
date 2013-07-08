@@ -7,10 +7,10 @@
 </div>
 
 <div class="control-group">
-    <%-label_for('api','url', {label: 'URL'}) %>
+    <%-label_for('api','dataUrl', {label: 'Data URL'}) %>
     <div class="controls">
         <div class="input-append">
-            <%-text_field_for('api','url', api.url, { placeholder: 'URL', required: true }) %>
+            <%-text_field_for('api','dataUrl', api.dataUrl, { placeholder: 'Data URL', required: true }) %>
             <button class="btn" type="button">Test</button>
         </div>
         <span class="help-block">The URL of the API within iJento.</span>
@@ -18,10 +18,18 @@
 </div>
 
 <div class="control-group">
-    <label for="api_description" class="control-label">Description</label>
+    <%-label_for('api','description', {label: 'Description'}) %>
     <div class="controls">
-        <textarea id="api_description" name="api[description]" placeholder="Title" rows="3"><%=api.description%></textarea>
+        <%-text_area_for('api','description', api.description, { placeholder: 'Description'}) %>
         <span class="help-block">What the API does.</span>
+    </div>
+</div>
+
+<div class="control-group">
+    <%-label_for('api','url', {label: 'API URL'}) %>
+    <div class="controls">
+        <%-text_field_for('api','url', api.url, { placeholder: 'API URL', required: true }) %>
+        <span class="help-block">The URL of the API.</span>
     </div>
 </div>
 

@@ -5,17 +5,13 @@ var homeController = (function () {
     "use strict";
 
     function index(req, res) {
-        var apis = API.find().sort({ name : 1 });
-        res.render('home/index', { title: 'Home', apis: apis });
-    }
-
-    function show(req, res) {
-        res.render('home/show', { title: 'Home' });
+        API.find(function (err, apis) {
+            res.render('home/index', { title: 'Home', apis: apis });
+        });
     }
 
     return {
-        index : index,
-        show : show
+        index : index
     };
 }());
 

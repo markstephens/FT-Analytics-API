@@ -5,7 +5,7 @@ var routes = function (app) {
 
     function crudRoutes(prefix, controller) {
         app.get((new RegExp('/' + prefix + '/([0-9a-z]+)/edit')), controller.update);
-        app.post((new RegExp('/' + prefix + '/([0-9a-z]+)/edit')), controller.update);
+        app.put((new RegExp('/' + prefix + '/([0-9a-z]+)/edit')), controller.update);
         app.get('/' + prefix + '/new', controller.create);
         app.post('/' + prefix + '/new', controller.create);
         app.get((new RegExp('/' + prefix + '/([0-9a-z]+)')), controller.show);

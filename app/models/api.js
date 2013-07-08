@@ -11,8 +11,9 @@ var mongoose = require('mongoose'),
  */
 var APISchema = new Schema({
     title: {type : String, 'default' : '', trim : true},
-    url: {type : String, 'default' : '', trim : true},
+    dataUrl: {type : String, 'default' : '', trim : true},
     description: {type : String, 'default' : '', trim : true},
+    url: {type : String, 'default' : '', trim : true},
 
     columns: [{
         name: { type : String, 'default' : '', trim : true }
@@ -26,9 +27,10 @@ var APISchema = new Schema({
  * Validations
  */
 APISchema.path('title').required(true);
-APISchema.path('url').required(true).validate(function (url) {
+APISchema.path('dataUrl').required(true).validate(function (url) {
     return /^(http?:\/\/)?([\da-z\.\-]+)\.([a-z\.]{2,6})([\/\w \.\-]*)*\/?$/.test(url);
 }, 'API url must be a valid URL.');
+APISchema.path('url').required(true);
 
 /**
  * Virtuals

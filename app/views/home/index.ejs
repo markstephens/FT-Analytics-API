@@ -6,9 +6,10 @@
 </div>
 
 <% if (apis.length > 0) { %>
+<h2>The APIs</h2>
 <ul>
     <% apis.forEach(function (api) { %>
-    <li><%= api.name %></li>
+    <li><%-link_to('apis', api, api.title) %></li>
     <% }) %>
 </ul>
 <% } %>

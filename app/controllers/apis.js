@@ -5,12 +5,18 @@ var apisController = (function () {
     "use strict";
 
     function index(req, res) {
-        var apis = API.find().sort({ name : 1 });
-        res.render('apis/index', { title: 'APIs', apis: apis });
+        API.find(function (err, apis) {
+            console.log(apis);
+
+            res.render('apis/index', { title: 'APIs', apis: apis });
+        });
     }
 
     function show(req, res) {
-        res.send(200, 'Show');
+        console.log(req.params);
+        API.findById(req.params[0], function(err, api) {
+            res.render('apis/show', { title: 'APIs', api: api });
+        });
     }
 
     function create(req, res) {

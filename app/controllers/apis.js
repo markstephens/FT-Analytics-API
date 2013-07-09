@@ -1,4 +1,5 @@
-var mongoose = require('mongoose'),
+var curl = require("../../util/curl"),
+    mongoose = require('mongoose'),
     API = mongoose.model('API');
 
 var apisController = (function () {
@@ -14,7 +15,7 @@ var apisController = (function () {
 
     function show(req, res) {
         console.log(req.params);
-        API.findById(req.params[0], function(err, api) {
+        API.findById(req.params[0], function (err, api) {
             res.render('apis/show', { title: 'APIs', api: api });
         });
     }
@@ -29,14 +30,23 @@ var apisController = (function () {
 
             api.save(function (error) {
                 if (error) {
-                    return res.render('apis/create', { title: 'New API', api: api, error : error });
+                    console.log(error);
+                    res.locals.errors = error;
+                    return res.render('apis/create', { title: 'New API', api: api });
                 }
 
                 return res.redirect('/apis/' + api._id);
             });
         } else {
-            api = new API();
-            return res.render('apis/create', { title: 'New API', api: api });
+            if (req.xhr) {
+                curl.data(req.query.url, function (response, data) {
+                    res.set('Content-Type', response.headers['content-type']);
+                    return res.send(response.statusCode, data);
+                });
+            } else {
+                api = new API();
+                return res.render('apis/create', { title: 'New API', api: api });
+            }
         }
     }
 

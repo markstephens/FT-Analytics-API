@@ -12,6 +12,7 @@ function generalHelpers(req, res, next) {
     }
 
     res.locals({
+        req : req,
         inspect : inspect,
         util : util,
         isActive : isActive

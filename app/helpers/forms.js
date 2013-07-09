@@ -2,11 +2,27 @@ var merge = require('../../util/merge');
 
 function formHelpers(req, res, next) {
 
-    if (typeof req.flash !== 'undefined') {
-        res.locals.info = req.flash('info');
-        res.locals.errors = req.flash('errors');
-        res.locals.success = req.flash('success');
-        res.locals.warning = req.flash('warning');
+    /*if (typeof req.flash !== 'undefined') {
+     res.locals.info = req.flash('info');
+     res.locals.errors = req.flash('errors');
+     res.locals.success = req.flash('success');
+     res.locals.warning = req.flash('warning');
+     }*/
+
+    function field_error(field) {
+        if (typeof res.locals.errors !== "undefined") {
+            var errors = res.locals.errors.errors;
+            if (errors.hasOwnProperty(field)) {
+                return '<span class="help-inline">' + errors[field].message + '</span>';
+            }
+        }
+    }
+
+    function show_errors() {
+        if (typeof res.locals.errors !== "undefined") {
+            var errors = res.locals.errors;
+            return '<div class="alert alert-block alert-error"><strong>' + errors.message + '</strong> ' + errors.name + '</div>';
+        }
     }
 
     function label_for(model, field, options) {
@@ -33,7 +49,17 @@ function formHelpers(req, res, next) {
             required : false
         }, options);
 
-        return '<input type="' + options.type + '" id="' + model + '_' + field + '" name="' + model + '[' + field + ']" placeholder="' + options.placeholder + '" value="' + value + '" ' + (options.required ? 'required="required"' : '') + ' />';
+        return [
+            '<input',
+            ' type="', options.type, '"',
+            ' id="', model, '_', field, '"',
+            ' name="', model, '[', field, ']"',
+            ' placeholder="', options.placeholder, '"',
+            ' value="' + value + '"',
+            (options.required ? ' required="required"' : ''),
+            ' />',
+            field_error(field)
+        ].join('');
     }
 
     function text_area_for(model, field, value, options) {
@@ -51,6 +77,7 @@ function formHelpers(req, res, next) {
     }
 
     res.locals({
+        show_errors : show_errors,
         label_for : label_for,
         text_field_for : text_field_for,
         text_area_for : text_area_for

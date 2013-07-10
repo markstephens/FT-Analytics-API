@@ -9,20 +9,34 @@ function formHelpers(req, res, next) {
      res.locals.warning = req.flash('warning');
      }*/
 
-    function field_error(field) {
-        if (typeof res.locals.errors !== "undefined") {
-            var errors = res.locals.errors.errors;
-            if (errors.hasOwnProperty(field)) {
-                return '<span class="help-inline">' + errors[field].message + '</span>';
-            }
-        }
-    }
-
     function show_errors() {
         if (typeof res.locals.errors !== "undefined") {
             var errors = res.locals.errors;
             return '<div class="alert alert-block alert-error"><strong>' + errors.message + '</strong> ' + errors.name + '</div>';
         }
+    }
+
+    function has_error(field) {
+        if (typeof res.locals.errors !== "undefined") {
+            return res.locals.errors.errors.hasOwnProperty(field);
+        }
+
+        return false;
+    }
+
+    function field_error(field) {
+        if (has_error(field)) {
+            return '<span class="help-inline">' + res.locals.errors.errors[field].message + '</span>';
+        }
+        return "";
+    }
+
+    function field_group_start(field) {
+        return '<div class="control-group' + (has_error(field) ? " error" : "") + '">' + field_error(field);
+    }
+
+    function field_group_end() {
+        return '</div>';
     }
 
     function label_for(model, field, options) {
@@ -57,8 +71,7 @@ function formHelpers(req, res, next) {
             ' placeholder="', options.placeholder, '"',
             ' value="' + value + '"',
             (options.required ? ' required="required"' : ''),
-            ' />',
-            field_error(field)
+            ' />'
         ].join('');
     }
 
@@ -76,11 +89,41 @@ function formHelpers(req, res, next) {
         return '<textarea id="' + model + '_' + field + '" name="' + model + '[' + field + ']" placeholder="' + options.placeholder + '" rows="' + options.rows + '">' + value + '</textarea>';
     }
 
+
+    function form_field(type, model, field, value, options) {
+        var html = [];
+        html.push(field_group_start(field));
+        html.push(label_for(model, field, options));
+        html.push('<div class="controls">');
+
+        switch (type) {
+        case 'textarea':
+            html.push(text_area_for(model, field, value, options));
+            break;
+        default:
+            html.push(text_field_for(model, field, value, options));
+        }
+
+
+
+        if (options.help) {
+            html.push('<span class="help-block">' + options.help + '</span>');
+        }
+
+        html.push('</div>');
+        html.push(field_group_end());
+
+        return html.join('');
+    }
+
     res.locals({
         show_errors : show_errors,
+        field_group_start: field_group_start,
+        field_group_end: field_group_end,
         label_for : label_for,
         text_field_for : text_field_for,
-        text_area_for : text_area_for
+        text_area_for : text_area_for,
+        form_field : form_field
     });
 
     next();

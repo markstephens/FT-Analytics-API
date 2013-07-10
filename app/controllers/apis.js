@@ -7,14 +7,11 @@ var apisController = (function () {
 
     function index(req, res) {
         API.find(function (err, apis) {
-            console.log(apis);
-
             res.render('apis/index', { title: 'APIs', apis: apis });
         });
     }
 
     function show(req, res) {
-        console.log(req.params);
         API.findById(req.params[0], function (err, api) {
             res.render('apis/show', { title: 'APIs', api: api });
         });
@@ -24,17 +21,16 @@ var apisController = (function () {
         var api;
 
         if (req.method === 'POST') {
-            console.log('API params', req.param('api'));
-
             api = new API(req.param('api'));
 
             api.save(function (error) {
                 if (error) {
-                    console.log(error);
+                    // TODO Turn into flash message
                     res.locals.errors = error;
                     return res.render('apis/create', { title: 'New API', api: api });
                 }
 
+                // TODO flash message!
                 return res.redirect('/apis/' + api._id);
             });
         } else {

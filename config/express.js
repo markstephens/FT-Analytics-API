@@ -12,8 +12,8 @@ module.exports = function (app, env, config) {
     // TODO app.use(express.compress());
     app.use(express.bodyParser());
     app.use(express.methodOverride());
-    //app.use(express.cookieParser('your secret here'));
-    //app.use(express.session());
+    app.use(express.cookieParser('4n4lyt1cs 4p1'));
+    app.use(express.session());
 
     // Load view helpers
     var helpers_path = config.root + '/app/helpers';

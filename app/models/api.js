@@ -4,7 +4,9 @@
  */
 
 var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+    processor = require("../processor/processor"),
+    Schema = mongoose.Schema,
+    merge = require("../../util/merge");
 
 /**
  * API Schema
@@ -15,6 +17,7 @@ var APISchema = new Schema({
     description: {type : String, 'default' : '', trim : true},
     url: {type : String, 'default' : '', trim : true},
     columns: {type: []},
+    data: [{type : Schema.Types.ObjectId, ref : 'Data'}],
     createdAt  : {type : Date, 'default' : Date.now},
     updatedAt  : {type : Date, 'default' : Date.now}
 });
@@ -42,15 +45,25 @@ APISchema.virtual('newcolumn')
  * Before save callback
  */
 /*APISchema.pre('save', function (next) {
-    console.log('Before save', this.columns);
+ console.log('Before save', this.columns);
 
-    next();
-});*/
+ next();
+ });*/
 
 APISchema.methods = {
-    getData : function () {
-        // TODO get data - use from app, cron, everywhere!
-        // Pass to data processors in util
+    populateData : function () {
+        var Data = mongoose.model('Data'),
+            api = this;
+
+        processor.process(api, function (data) { // data should be in the format of [{ date: Date, data: {} }]
+            console.log('api.js', 'Found ' + data.length + ' records.');
+
+            data.forEach(function (d) {
+                (new Data(merge.object(d, { _api : api._id }))).save();
+            });
+
+            console.log('api.js', 'DONE!');
+        });
     }
 };
 

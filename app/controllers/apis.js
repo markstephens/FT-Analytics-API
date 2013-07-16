@@ -13,6 +13,11 @@ var apisController = (function () {
 
     function show(req, res) {
         API.findById(req.params[0], function (err, api) {
+            if (typeof req.param('populateData') !== "undefined") {
+                api.populateData();
+                return res.redirect('/apis/' + api._id);
+            }
+
             res.render('apis/show', { title: 'APIs', api: api });
         });
     }

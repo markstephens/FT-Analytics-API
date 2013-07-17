@@ -29,7 +29,11 @@ var processor = (function () {
                     var brand = require(brands_path + '/' + file);
                     brand.can_process(data, function (result) {
                         console.log('processor.js', file + ' can process!');
-                        brand.process(model.columns, result, callback);
+                        if (result.date > model.lastDataUpdate) {
+                            brand.process(model.columns, result, callback);
+                        } else {
+                            console.log('No new data found');
+                        }
                     });
                 }
             });

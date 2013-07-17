@@ -2,7 +2,7 @@ var util = require('util');
 
 function generalHelpers(req, res, next) {
 
-    var flash_types = ['error', 'success', 'info'];
+    var flash_types = ['error', 'success', 'warning', 'info'];
 
     function messages() {
         var html = [];
@@ -33,12 +33,17 @@ function generalHelpers(req, res, next) {
         return (new RegExp(link)).test(req.url);
     }
 
+    function format(text) {
+        return text.replace(/\n/g, '<br />');
+    }
+
     res.locals({
         req : req,
         messages : messages,
         inspect : inspect,
         util : util,
-        isActive : isActive
+        isActive : isActive,
+        format : format
     });
 
     next();

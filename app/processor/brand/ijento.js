@@ -12,7 +12,17 @@ var iJentoProcessor = (function () {
                 console.log('ijento.js', result.results['column-data']);
 
                 if (result.results.hasOwnProperty('column-data') && result.results.hasOwnProperty('row')) {
-                    callback(result.results);
+                    var last_update, date_str;
+
+                    // Wed Jul 17 07:52:37 BST 2013
+                    result.$['run-time'].match(/(\w{3}) (\w{3}) (\d{2}) (\d{2}):(\d{2}):(\d{2}) (\w{3}) (\d{4})/);
+
+                    date_str = RegExp.$3 + ' ' + RegExp.$2 + ' ' + RegExp.$8 + ' ' + RegExp.$4 + ':' + RegExp.$5 + ':' + RegExp.$6;
+                    last_update = new Date(Date.parse(date_str));
+
+                    console.log(result.$['run-time'], date_str, last_update);
+
+                    callback({date: last_update, results: result.results});
                 }
             }
         });
@@ -25,11 +35,11 @@ var iJentoProcessor = (function () {
     function process(columns, result, callback) {
         console.log('ijento.js', 'processing');
 
-        var key, processed_data = [];
+        var key, processed_data = [], results = result.results;
 
-        for (key in result['column-data']) {
-            if (result['column-data'].hasOwnProperty(key)) {
-                available_cols[result['column-data'][key]] = key;
+        for (key in results['column-data']) {
+            if (results['column-data'].hasOwnProperty(key)) {
+                available_cols[results['column-data'][key]] = key;
             }
         }
 
@@ -39,7 +49,7 @@ var iJentoProcessor = (function () {
             }
         });
 
-        result.row.forEach(function (r) {
+        results.row.forEach(function (r) {
             var data = {},
                 datetime = new Date(Date.parse(getRowValue(r, 'Timestamp binned by Date')));
             datetime.setUTCHours(parseInt(getRowValue(r, 'Timestamp binned by Hour of day'), 10));
@@ -51,7 +61,7 @@ var iJentoProcessor = (function () {
             processed_data.push({ date: datetime, data: data });
         });
 
-        callback(processed_data); // data should be in the format of [{ date: Date, data: {} }]
+        callback({ date: result.date, data: processed_data }); // data should be in the format of { date: Date, data: [{ date: Date, data: {} }] }
     }
 
     return {

@@ -12,11 +12,17 @@ var mongoose = require('mongoose'),
  * API Schema
  */
 var APISchema = new Schema({
+    // Essential columns
     title: {type : String, 'default' : '', trim : true},
-    dataUrl: {type : String, 'default' : '', trim : true},
     description: {type : String, 'default' : '', trim : true},
     url: {type : String, 'default' : '', trim : true},
+
+    // Data info
+    dataUrl: {type : String, 'default' : '', trim : true},
     columns: {type: []},
+    lastDataUpdate: {type: Date},
+    num_records: {type: Number, 'default': 0 },
+
     data: [{type : Schema.Types.ObjectId, ref : 'Data'}],
     createdAt  : {type : Date, 'default' : Date.now},
     updatedAt  : {type : Date, 'default' : Date.now}
@@ -55,12 +61,16 @@ APISchema.methods = {
         var Data = mongoose.model('Data'),
             api = this;
 
-        processor.process(api, function (data) { // data should be in the format of [{ date: Date, data: {} }]
-            console.log('api.js', 'Found ' + data.length + ' records.');
+        processor.process(api, function (data) { // data should be in the format of { date: Date, data: [{ date: Date, data: {} }] }
+            console.log('api.js', 'Found ' + data.data.length + ' records.');
 
-            data.forEach(function (d) {
+            data.data.forEach(function (d) {
                 (new Data(merge.object(d, { _api : api._id }))).save();
             });
+
+            api.lastDataUpdate = data.date;
+            api.num_records += data.data.length;
+            api.save();
 
             console.log('api.js', 'DONE!');
         });

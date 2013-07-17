@@ -7,12 +7,16 @@
 <p><a href="/apis/new" class="btn btn-primary">New API</a></p>
 
 <% if (apis.length > 0) { %>
-    <% apis.forEach(function (api) { %>
+<% apis.forEach(function (api) { %>
+<div class="well">
     <h2><%-link_to('apis', api, api.title) %></h2>
-    <p><%= api.description %></p>
-    <% }) %>
-<% } %>
+    <p><%-format(api.description) %></p>
+</div>
+<% }) %>
 
 <p><a href="/apis/new" class="btn btn-primary">New API</a></p>
+<% } else { %>
+<div class="alert alert-info">No API&rsquo;s found.</div>
+<% } %>
 
 <% include ../layout/footer %>

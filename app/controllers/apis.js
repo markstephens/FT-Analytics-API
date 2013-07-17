@@ -16,7 +16,7 @@ var apisController = (function () {
             if (typeof req.param('populateData') !== "undefined") {
                 api.populateData();
 
-                req.flash('info', api.title + ' API is grabbing data. Please wait...');
+                req.flash('info', api.title + ' API is checking for data. Please wait...');
                 return res.redirect('/apis/' + api._id);
             }
 

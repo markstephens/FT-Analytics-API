@@ -9,6 +9,10 @@ function formHelpers(req, res, next) {
      res.locals.warning = req.flash('warning');
      }*/
 
+    function csrf() {
+        return '<input type="hidden" name="_csrf" value="' + req.session._csrf + '" />';
+    }
+
     function show_errors() {
         if (typeof res.locals.errors !== "undefined") {
             var errors = res.locals.errors;
@@ -117,6 +121,7 @@ function formHelpers(req, res, next) {
     }
 
     res.locals({
+        csrf : csrf,
         show_errors : show_errors,
         field_group_start: field_group_start,
         field_group_end: field_group_end,

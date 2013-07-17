@@ -15,6 +15,8 @@ var apisController = (function () {
         API.findById(req.params[0], function (err, api) {
             if (typeof req.param('populateData') !== "undefined") {
                 api.populateData();
+
+                req.flash('info', api.title + ' API is grabbing data. Please wait...');
                 return res.redirect('/apis/' + api._id);
             }
 
@@ -30,12 +32,11 @@ var apisController = (function () {
 
             api.save(function (error) {
                 if (error) {
-                    // TODO Turn into flash message
-                    res.locals.errors = error;
+                    res.flash('error', error);
                     return res.render('apis/create', { title: 'New API', api: api });
                 }
 
-                // TODO flash message!
+                req.flash('success', api.title + ' API successfully created');
                 return res.redirect('/apis/' + api._id);
             });
         } else {

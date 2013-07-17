@@ -7,13 +7,17 @@ module.exports = function (app, env, config) {
     app.set('port', process.env.PORT || 3000);
     app.set('views', config.root + '/app/views');
     app.set('view engine', 'ejs');
-    app.use(express.favicon());
+
+    //app.use(express.favicon());
     app.use(express.logger('dev'));
-    // TODO app.use(express.compress());
-    app.use(express.bodyParser());
+    app.use(express.compress());
     app.use(express.methodOverride());
+    app.use(express.bodyParser());
+
     app.use(express.cookieParser('4n4lyt1cs 4p1'));
     app.use(express.session());
+    app.use(express.csrf());
+    app.use(require('flashify'));
 
     // Load view helpers
     var helpers_path = config.root + '/app/helpers';

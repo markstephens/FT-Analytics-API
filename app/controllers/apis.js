@@ -16,11 +16,11 @@ var apisController = (function () {
             if (typeof req.param('populateData') !== "undefined") {
                 api.populateData();
 
-                req.flash('info', api.title + ' API is checking for data. Please wait...');
+                req.flash('success', api.title + ' API is checking for data. Please wait...');
                 return res.redirect('/apis/' + api._id);
             }
 
-            res.render('apis/show', { title: 'APIs', api: api });
+            res.render('apis/show', { title: api.title, api: api });
         });
     }
 
@@ -53,7 +53,9 @@ var apisController = (function () {
     }
 
     function update(req, res) {
-        res.send(200, 'Update');
+        API.findById(req.params[0], function (err, api) {
+            return res.render('apis/update', { title: 'Edit ' + api.title, api: api });
+        });
     }
 
     function destroy(req, res) {

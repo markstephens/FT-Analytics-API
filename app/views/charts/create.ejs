@@ -1,0 +1,24 @@
+<% include ../layout/header %>
+
+<div class="page-header">
+    <h1>New chart for <%-link_to('apis', api, api.title) %></h1>
+</div>
+
+<form action="/apis/<%=api._id %>/charts/new" method="post" class="form-horizontal">
+    <%-csrf() %>
+    <input type="hidden" name="chart[_id]" value="<%=chart._id%>" />
+
+    <fieldset>
+        <legend>New Chart</legend>
+
+        <% include _form %>
+
+        <div class="form-actions">
+            <p><button type="submit" class="btn btn-success">Create Chart</button></p>
+            <p><a href="/apis/<%=api._id %>/charts" class="btn btn-danger btn-mini">Back</a></p>
+        </div>
+
+    </fieldset>
+</form>
+
+<% include ../layout/footer %>

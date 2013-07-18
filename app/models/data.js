@@ -5,7 +5,7 @@
 
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
-    Mixed = mongoose.Schema.Types.Mixed;
+    Mixed = Schema.Types.Mixed;
 
 /**
  * Data Schema

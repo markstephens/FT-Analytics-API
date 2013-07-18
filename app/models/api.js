@@ -6,7 +6,33 @@
 var mongoose = require('mongoose'),
     processor = require("../processor/processor"),
     Schema = mongoose.Schema,
+    Mixed = Schema.Types.Mixed,
     merge = require("../../util/merge");
+
+/**
+ * Getters
+ */
+var getLastDataUpdate = function (date) {
+    return typeof date === "undefined" ? (new Date(0)) : date;
+};
+
+
+/**
+ * Setters
+ */
+var setColumns = function (columns) {
+    return columns.map(function (column) {
+        if (typeof column === "string") {
+            return {
+                name : column,
+                values : []
+            };
+        } else {
+            return column;
+        }
+    });
+};
+
 
 /**
  * API Schema
@@ -19,11 +45,14 @@ var APISchema = new Schema({
 
     // Data info
     dataUrl: {type : String, 'default' : '', trim : true},
-    columns: {type: []},
-    lastDataUpdate: {type: Date},
+    columns: {type: [{ type: Mixed }], set: setColumns },
+    lastDataUpdate: {type: Date, get: getLastDataUpdate},
     num_records: {type: Number, 'default': 0 },
 
+    // Has many
     data: [{type : Schema.Types.ObjectId, ref : 'Data'}],
+    charts: [{type : Schema.Types.ObjectId, ref : 'Chart'}],
+
     createdAt  : {type : Date, 'default' : Date.now},
     updatedAt  : {type : Date, 'default' : Date.now}
 });
@@ -50,11 +79,6 @@ APISchema.virtual('newcolumn')
 /**
  * Before save callback
  */
-/*APISchema.pre('save', function (next) {
- console.log('Before save', this.columns);
-
- next();
- });*/
 
 APISchema.methods = {
     populateData : function () {
@@ -66,6 +90,10 @@ APISchema.methods = {
 
             data.data.forEach(function (d) {
                 (new Data(merge.object(d, { _api : api._id }))).save();
+            });
+
+            api.columns.forEach(function (column) {
+                column.values = data.column_values[column.name];
             });
 
             api.lastDataUpdate = data.date;

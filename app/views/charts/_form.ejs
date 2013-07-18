@@ -1,0 +1,13 @@
+<%-messages() %>
+
+<%-form_field('text', 'chart', 'title', chart.title, {label: 'Title', placeholder: 'Title', required: true, help: 'Give the Chart a name.'}) %>
+
+<% if (api.columns.length > 0) { %>
+<% api.columns.forEach(function(column) { %>
+<label class="checkbox">
+    <input type="checkbox" name="api[columns][]" value="<%=column %>" checked="checked"> <%=column %>
+</label>
+<% }); %>
+<% } else { %>
+<p class="muted">(Try grabbing the URL first!)</p>
+<% } %>

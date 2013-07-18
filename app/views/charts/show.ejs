@@ -4,10 +4,7 @@
     <h1><%=api.title %> API</h1>
 </div>
 
-<div class="well">
-    <div class="pull-right"><a href="<%=req.url %>/edit" class="btn btn-primary">Edit</a></div>
-    <%-format(api.description) %>
-</div>
+<div class="well"><%-format(api.description) %></div>
 
 <%-messages() %>
 
@@ -17,15 +14,7 @@
         <% if (api.columns.length > 0) { %>
         <ol>
             <% api.columns.forEach(function(column) { %>
-            <li><%=column.name %>
-                <% if (column.values.length > 0) { %>
-                <ul>
-                    <% column.values.forEach(function(value) { %>
-                    <li><%=value %></li>
-                    <% }); %>
-                </ul>
-                <% } %>
-            </li>
+            <li><%=column %></li>
             <% }); %>
         </ol>
         <% } else { %>
@@ -36,12 +25,12 @@
         <h2>Data</h2>
         <p>Last updated: <%= (api.lastDataUpdate.getTime() === (new Date(0)).getTime() ? 'never' : api.lastDataUpdate) %></p>
         <p>Number of records: <%=api.num_records %></p>
-        <p><a href="?populateData" class="btn btn-small btn-warning">Populate with latest data</a></p>
+        <p><a href="?populateData" class="btn btn-small btn-primary">Populate with latest data</a></p>
     </div>
 </div>
 
 <h2>Charts</h2>
-<p><a class="btn btn-primary" href="<%=req.url%>/charts">Configure charts</a>
+<p><a class="btn btn-primary" href="<%=req.url%>/charts">Configure charts</a></p>
 
 <h2>Configure your API</h2>
 <div class="alert alert-info">

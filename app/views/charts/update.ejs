@@ -4,7 +4,7 @@
     <h1>Edit <%=api.title %></h1>
 </div>
 
-<form action="/apis/<%=api._id%>/edit" method="post" class="form-horizontal">
+<form action="/apis/<%=api._id %>/charts/<%=chart._id%>/edit" method="post" class="form-horizontal">
     <%-csrf() %>
     <input type="hidden" name="_method" value="PUT"/>
     <input type="hidden" name="api[_id]" value="<%=api._id%>" />

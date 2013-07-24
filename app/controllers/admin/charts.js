@@ -5,22 +5,18 @@ var mongoose = require('mongoose'),
 var chartsController = (function () {
     "use strict";
 
+    var path = 'admin/apis/([0-9a-z]+)/charts',
+        view_path = 'admin/charts';
+
     function index(req, res) {
         API.findById(req.params[0]).populate('charts').exec(function (err, api) {
-            res.render('charts/index', { title: 'Charts for ' + api.title, api: api });
+            res.render(view_path + '/index', { title: 'Charts for ' + api.title, api: api });
         });
     }
 
     function show(req, res) {
         API.findById(req.params[0], function (err, api) {
-            if (typeof req.param('populateData') !== "undefined") {
-                api.populateData();
-
-                req.flash('info', api.title + ' API is checking for data. Please wait...');
-                return res.redirect('/apis/' + api._id);
-            }
-
-            res.render('apis/show', { title: api.title, api: api });
+            res.render(view_path + '/show', { title: api.title, api: api });
         });
     }
 
@@ -34,15 +30,15 @@ var chartsController = (function () {
                 chart.save(function (error) {
                     if (error) {
                         res.flash('error', error);
-                        return res.render('charts/create', { title: 'New Chart for ' + api.title, api: api, chart: chart });
+                        return res.render(view_path + '/create', { title: 'New Chart for ' + api.title, api: api, chart: chart });
                     }
 
                     req.flash('success', chart.title + ' Chart successfully created');
-                    return res.redirect('/apis/' + api._id + '/charts/' + chart._id);
+                    return res.redirect(path.replace('([0-9a-z]+)', api._id) + '/' + chart._id);
                 });
             } else {
                 chart = new Chart();
-                return res.render('charts/create', { title: 'New Chart for ' + api.title, api: api, chart: chart });
+                return res.render(view_path + '/create', { title: 'New Chart for ' + api.title, api: api, chart: chart });
             }
 
         });
@@ -57,6 +53,7 @@ var chartsController = (function () {
     }
 
     return {
+        path : path,
         index : index,
         show : show,
         create : create,

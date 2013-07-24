@@ -1,24 +1,29 @@
 var homeController = require('../app/controllers/home'),
-    apisController = require('../app/controllers/apis'),
-    chartsController = require('../app/controllers/charts');
+    apiController = require('../app/controllers/api'),
+    // Admin
+    adminApisController = require('../app/controllers/admin/apis'),
+    adminChartsController = require('../app/controllers/admin/charts');
 
 var routes = function (app) {
 
-    function crudRoutes(prefix, controller) {
-        app.get((new RegExp('/' + prefix + '/([0-9a-z]+)/edit')), controller.update);
-        app.put((new RegExp('/' + prefix + '/([0-9a-z]+)/edit')), controller.update);
-        app.get((new RegExp('/' + prefix + '/new')), controller.create);
-        app.post((new RegExp('/' + prefix + '/new')), controller.create);
-        app.get((new RegExp('/' + prefix + '/([0-9a-z]+)')), controller.show);
-        app.delete((new RegExp('/' + prefix + '/([0-9a-z]+)')), controller.destroy);
-        app.get((new RegExp('/' + prefix)), controller.index);
+    function crudRoutes(controller) {
+        app.get((new RegExp('/' + controller.path + '/([0-9a-z]+)/edit')),  controller.update);
+        app.put((new RegExp('/' + controller.path + '/([0-9a-z]+)/edit')),  controller.update);
+        app.get((new RegExp('/' + controller.path + '/new')),               controller.create);
+        app.post((new RegExp('/' + controller.path + '/new')),               controller.create);
+        app.get((new RegExp('/' + controller.path + '/([0-9a-z]+)')),       controller.show);
+        app.delete((new RegExp('/' + controller.path + '/([0-9a-z]+)')),       controller.destroy);
+        app.get((new RegExp('/' + controller.path)),                        controller.index);
     }
 
     // Charts
-    crudRoutes('apis/([0-9a-z]+)/charts', chartsController);
+    crudRoutes(adminChartsController);
 
     // API
-    crudRoutes('apis', apisController);
+    app.get((new RegExp('/' + adminApisController.path + '/([0-9a-z]+)/build')), adminApisController.build);
+    crudRoutes(adminApisController);
+
+    // Serve an API.
 
     // Home pages
     app.get('/', homeController.index);

@@ -14,15 +14,23 @@ function formHelpers(req, res, next) {
     }
 
     function show_errors() {
-        if (typeof res.locals.errors !== "undefined") {
-            var errors = res.locals.errors;
-            return '<div class="alert alert-block alert-error"><strong>' + errors.message + '</strong> ' + errors.name + '</div>';
+        if (typeof res.locals.flash !== "undefined") {
+            if (typeof res.locals.flash.error !== "undefined") {
+                var errors = res.locals.error;
+                return '<div class="alert alert-block alert-error"><strong>' + errors.message + '</strong> ' + errors.name + '</div>';
+            }
         }
     }
 
     function has_error(field) {
-        if (typeof res.locals.errors !== "undefined") {
-            return res.locals.errors.errors.hasOwnProperty(field);
+        if (typeof res.locals.flash !== "undefined") {
+            if (typeof res.locals.flash.error !== "undefined") {
+                if (typeof res.locals.flash.error[0] !== "undefined") {
+                    if (typeof res.locals.flash.error[0].errors !== "undefined") {
+                        return res.locals.flash.error[0].errors.hasOwnProperty(field);
+                    }
+                }
+            }
         }
 
         return false;
@@ -30,7 +38,7 @@ function formHelpers(req, res, next) {
 
     function field_error(field) {
         if (has_error(field)) {
-            return '<span class="help-inline">' + res.locals.errors.errors[field].message + '</span>';
+            return '<span class="help-inline">' + res.locals.flash.error[0].errors[field].message + '</span>';
         }
         return "";
     }

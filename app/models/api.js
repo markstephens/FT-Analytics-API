@@ -25,7 +25,8 @@ var setColumns = function (columns) {
         if (typeof column === "string") {
             return {
                 name : column,
-                values : []
+                values : [],
+                canSum : false
             };
         } else {
             return column;
@@ -62,8 +63,8 @@ var APISchema = new Schema({
  */
 APISchema.path('title').required(true);
 APISchema.path('dataUrl').required(true).validate(function (url) {
-    return (/^(https?:\/\/)?([\da-z\.\-]+)\.([a-z\.]{2,6})([\/\w])+(\?([\/\w \.\-%&=]*))?$/).test(url.trim());
-}, 'API url must be a valid URL.');
+    return (/^(https?:\/\/)?([\da-z\.\-]+)(\.([a-z\.]{2,6}))?(:\d+)?([\/\.\w])+(\?([\/\w \.\-%&=]*))?$/).test(url.trim());
+}, 'Data url must be a valid URL.');
 APISchema.path('url').required(true);
 
 /**
@@ -86,16 +87,13 @@ APISchema.methods = {
             api = this;
 
         processor.process(api, function (data) { // data should be in the format of { date: Date, data: [{ date: Date, data: {} }] }
-            console.log('api.js', 'Found ' + data.data.length + ' records.');
+            //console.log('api.js', 'Found ' + data.data.length + ' records.');
 
             data.data.forEach(function (d) {
                 (new Data(merge.object(d, { _api : api._id }))).save();
             });
 
-            api.columns.forEach(function (column) {
-                column.values = data.column_values[column.name];
-            });
-
+            api.columns = data.columns;
             api.lastDataUpdate = data.date;
             api.num_records += data.data.length;
             api.save();

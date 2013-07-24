@@ -1,7 +1,7 @@
-<% include ../layout/header %>
+<% include ../../layout/header %>
 
 <div class="page-header">
-    <h1>Charts for <%-link_to('apis', api, api.title) %></h1>
+    <h1>Charts for <%-link_to('/admin/apis', api, api.title) %></h1>
 </div>
 
 <p><a href="<%=req.url %>/new" class="btn btn-primary">New Chart</a></p>
@@ -17,4 +17,4 @@
 <div class="alert alert-info">No Charts found.</div>
 <% } %>
 
-<% include ../layout/footer %>
+<% include ../../layout/footer %>

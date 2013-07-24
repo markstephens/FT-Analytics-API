@@ -1,10 +1,10 @@
-<% include ../layout/header %>
+<% include ../../layout/header %>
 
 <div class="page-header">
-    <h1>Edit <%=api.title %></h1>
+    <h1>Edit <%-link_to('/admin/apis', api, api.title) %></h1>
 </div>
 
-<form action="/apis/<%=api._id%>/edit" method="post" class="form-horizontal">
+<form action="/admin/apis/<%=api._id%>/edit" method="post" class="form-horizontal">
     <%-csrf() %>
     <input type="hidden" name="_method" value="PUT"/>
     <input type="hidden" name="api[_id]" value="<%=api._id%>" />
@@ -16,7 +16,7 @@
 
         <div class="form-actions">
             <p><button type="submit" class="btn btn-success">Update API</button></p>
-            <p><a href="/apis/<%=api._id%>" class="btn btn-danger btn-mini">Back</a></p>
+            <p><a href="/admin/apis/<%=api._id%>" class="btn btn-danger btn-mini">Back</a></p>
         </div>
 
     </fieldset>
@@ -24,4 +24,4 @@
 
 
 
-<% include ../layout/footer %>
+<% include ../../layout/footer %>

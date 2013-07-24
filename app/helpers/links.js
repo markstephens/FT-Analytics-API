@@ -12,7 +12,7 @@ function linkHelpers(req, res, next) {
             'class' : ''
         }, options);
 
-        return '<a href="/' + model + '/' + object._id + '" title="' + options.title + '" class="' + options['class'] + '">' + label + '</a>';
+        return '<a href="' + model + '/' + object._id + '" title="' + options.title + '" class="' + options['class'] + '">' + label + '</a>';
     }
 
     res.locals({

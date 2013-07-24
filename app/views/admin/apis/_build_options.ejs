@@ -1,0 +1,30 @@
+<% if (api.columns.length > 0) { %>
+<div class="well well-large">
+    <h2>Configure your API</h2>
+    <form action="/admin/apis/<%=api._id%>/build" method="get" class="form-inline">
+        <label>
+            Rolling date
+            <div class="input-append">
+                <input type="number" name="date" placeholder="1" />
+                <span class="add-on">days</span>
+            </div>
+        </label>
+
+        <% api.columns.forEach(function(column) { %>
+        <% if (column.values.length > 0) { %>
+        <label>
+            <%=column.name %>
+            <select name="<%=column.name %>">
+                <option value="">All</option>
+                <% column.values.forEach(function(value) { %>
+                <option value="<%=value %>"><%=value %></option>
+                <% }); %>
+            </select>
+        </label>
+        <% } %>
+        <% }); %>
+
+        <button type="submit" class="btn btn-success">Build API</button>
+    </form>
+</div>
+<% } %>

@@ -9,17 +9,27 @@ function generalHelpers(req, res, next) {
         if (typeof res.locals.flash !== "undefined") {
             flash_types.forEach(function (type) {
                 if (typeof res.locals.flash[type] !== "undefined") {
-                    html.push('<div class="alert alert-' + type + '">' + res.locals.flash[type] + '</div>');
+                    html.push('<div class="alert alert-' + type + '">');
+                    res.locals.flash[type].forEach(function (err) {
+                        if (err.hasOwnProperty('errors')) {
+                            html.push('<strong>' + err.message + '</strong>');
+                            html.push('<div>' + err + '</div>');
+
+                        } else {
+                            html.push('<div>' + err + '</div>');
+                        }
+                    });
+                    html.push('</div>');
                 }
             });
         }
         /*if (typeof req.locals !== "undefined") {
-            flash_types.forEach(function (type) {
-                if (typeof req.locals[type] !== "undefined") {
-                    html.push('<div class="alert alert-' + type + '">' + req.locals[type] + '</div>');
-                }
-            });
-        }*/
+         flash_types.forEach(function (type) {
+         if (typeof req.locals[type] !== "undefined") {
+         html.push('<div class="alert alert-' + type + '">' + req.locals[type] + '</div>');
+         }
+         });
+         }*/
 
         return html.join('');
     }

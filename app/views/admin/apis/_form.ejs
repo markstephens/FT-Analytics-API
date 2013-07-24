@@ -30,7 +30,7 @@
                         <% if (api.columns.length > 0) { %>
                         <% api.columns.forEach(function(column) { %>
                         <label class="checkbox">
-                            <input type="checkbox" name="api[columns][]" value="<%=column %>" checked="checked"> <%=column %>
+                            <input type="checkbox" name="api[columns][]" value="<%=column.name %>" checked="checked"> <%=column.name %>
                         </label>
                         <% }); %>
                         <% } else { %>

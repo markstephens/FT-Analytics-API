@@ -1,13 +1,16 @@
-var curl = require("../../util/curl"),
+var curl = require("../../../util/curl"),
     mongoose = require('mongoose'),
     API = mongoose.model('API');
 
-var apisController = (function () {
+var adminApisController = (function () {
     "use strict";
+
+    var path = 'admin/apis',
+        view_path = 'admin/apis';
 
     function index(req, res) {
         API.find(function (err, apis) {
-            res.render('apis/index', { title: 'APIs', apis: apis });
+            res.render(view_path + '/index', { title: 'APIs', apis: apis });
         });
     }
 
@@ -17,10 +20,17 @@ var apisController = (function () {
                 api.populateData();
 
                 req.flash('success', api.title + ' API is checking for data. Please wait...');
-                return res.redirect('/apis/' + api._id);
+                return res.redirect('/' + path + '/' + api._id);
             }
 
-            res.render('apis/show', { title: api.title, api: api });
+            res.render(view_path + '/show', { title: api.title, api: api });
+        });
+    }
+
+    function build(req, res) {
+        API.findById(req.params[0], function (err, api) {
+            // Make API url
+            res.render(view_path + '/build', { title: api.title, api: api });
         });
     }
 
@@ -33,28 +43,29 @@ var apisController = (function () {
             api.save(function (error) {
                 if (error) {
                     res.flash('error', error);
-                    return res.render('apis/create', { title: 'New API', api: api });
+                    return res.render(view_path + '/create', { title: 'New API', api: api });
                 }
 
                 req.flash('success', api.title + ' API successfully created');
-                return res.redirect('/apis/' + api._id);
+                return res.redirect('/' + path + '/' + api._id);
             });
         } else {
             if (req.xhr) {
+                // TODO Use processor.head
                 curl.data(req.query.url, function (response, data) {
                     res.set('Content-Type', response.headers['content-type']);
                     return res.send(response.statusCode, data);
                 });
             } else {
                 api = new API();
-                return res.render('apis/create', { title: 'New API', api: api });
+                return res.render(view_path + '/create', { title: 'New API', api: api });
             }
         }
     }
 
     function update(req, res) {
         API.findById(req.params[0], function (err, api) {
-            return res.render('apis/update', { title: 'Edit ' + api.title, api: api });
+            return res.render(view_path + '/update', { title: 'Edit ' + api.title, api: api });
         });
     }
 
@@ -63,12 +74,14 @@ var apisController = (function () {
     }
 
     return {
+        path: path,
         index : index,
         show : show,
+        build : build,
         create : create,
         update : update,
         destroy : destroy
     };
 }());
 
-module.exports = apisController;
+module.exports = adminApisController;

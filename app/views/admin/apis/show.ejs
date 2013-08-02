@@ -34,6 +34,7 @@
     </div>
     <div class="span6">
         <h2>Data</h2>
+        <p>URL: <a href="<%=api.dataUrl %>" target="_blank"><%=api.dataUrl %></a></p>
         <p>Last updated: <%= (api.lastDataUpdate.getTime() === (new Date(0)).getTime() ? 'never' : api.lastDataUpdate) %></p>
         <p>Number of records: <%=api.num_records %></p>
         <p>

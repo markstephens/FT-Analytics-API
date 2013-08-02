@@ -44,7 +44,7 @@ var iJentoProcessor = (function () {
     function process(chosen_columns, result, callback) {
         //console.log('ijento.js', 'processing');
 
-        var key, processed_data = [], results = result.results;
+        var key, final_data = [], processed_data = {}, results = result.results;
 
         for (key in results['column-data'][0]) {
             if (results['column-data'][0].hasOwnProperty(key)) {
@@ -64,6 +64,7 @@ var iJentoProcessor = (function () {
         results.row.forEach(function (r) {
             var data = {}, i, value, column,
                 datetime = new Date(Date.parse(getRowValue(r, 'Timestamp binned by Date')));
+            datetime = new Date(Date.UTC(datetime.getFullYear(), datetime.getMonth(), datetime.getDate()));
             datetime.setUTCHours(parseInt(getRowValue(r, 'Timestamp binned by Hour of day'), 10));
 
             for (i = 0; i < columns.length; i++) {
@@ -86,10 +87,21 @@ var iJentoProcessor = (function () {
                 }
             }
 
-            processed_data.push({ date: datetime, data: data });
+            if (!processed_data.hasOwnProperty(datetime)) {
+                processed_data[datetime] = [];
+            }
+
+            processed_data[datetime].push(data);
         });
 
-        callback({ date: result.date, columns: columns, data: processed_data }); // data should be in the format of { date: Date, data: [{ date: Date, data: {} }] }
+        // Turn it into an array
+        for (key in processed_data) {
+            if (processed_data.hasOwnProperty(key)) {
+                final_data.push({ date: key, data: processed_data[key] });
+            }
+        }
+
+        callback({ date: result.date, columns: columns, data: final_data }); // data should be in the format of { date: Date, data: [{ date: Date, data: {} }] }
     }
 
     return {

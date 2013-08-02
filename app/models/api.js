@@ -70,7 +70,6 @@ APISchema.path('url').required(true);
 /**
  * Virtuals
  */
-
 APISchema.virtual('newcolumn')
     .set(function (column) {
         this.columns.push(column);
@@ -80,7 +79,6 @@ APISchema.virtual('newcolumn')
 /**
  * Before save callback
  */
-
 APISchema.methods = {
     populateData : function () {
         var Data = mongoose.model('Data'),

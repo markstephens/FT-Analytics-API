@@ -27,14 +27,20 @@ var apiController = (function () {
                     param_key;
 
                 if (typeof req.query.date !== "undefined") {
-                    date = req.query.date;
+                    if (req.query.date.trim() !== '') {
+                        date = req.query.date;
+                    }
                     delete params.date;
                 }
 
                 if (obLength(params) > 0) {
                     for (param_key in params) {
                         if (params.hasOwnProperty(param_key)) {
-                            query['data.' + param_key] = params[param_key];
+                            if (params[param_key].trim() !== '') {
+                                query['data.' + param_key] = params[param_key];
+                            } else {
+                                delete params[param_key];
+                            }
                         }
                     }
 

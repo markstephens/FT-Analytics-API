@@ -27,6 +27,7 @@ var routes = function (app) {
     app.get((new RegExp('/api/([0-9a-z]+)')), apiController.show);
 
     // Home pages
+    app.get((new RegExp('/builder/([0-9a-z]+)')), homeController.builder);
     app.get('/', homeController.index);
 };
 

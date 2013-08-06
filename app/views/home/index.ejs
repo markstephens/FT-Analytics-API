@@ -2,14 +2,14 @@
 
 <div class="hero-unit">
     <h1>FT Analytics API</h1>
-    <p>An API for Analytics!</p>
+    <p>An API for Analytics data!</p>
 </div>
 
 <% if (apis.length > 0) { %>
 <h2>The APIs</h2>
 <ul>
     <% apis.forEach(function (api) { %>
-    <li><%-link_to('api', api, api.title) %></li>
+    <li><%-link_to('builder', api, api.title) %> &ndash; <%-link_to('api', api, 'Just give me JSON!', { 'class':'btn btn-small btn-success' }) %></li>
     <% }) %>
 </ul>
 <% } %>

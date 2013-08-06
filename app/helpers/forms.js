@@ -128,6 +128,18 @@ function formHelpers(req, res, next) {
         return html.join('');
     }
 
+    function selected(name, value) {
+        if (typeof req.query !== "undefined") {
+            if (typeof req.query[name] !== "undefined") {
+                if (req.query[name] === value) {
+                    return ' selected="selected"';
+                }
+            }
+        }
+
+        return '';
+    }
+
     res.locals({
         csrf : csrf,
         show_errors : show_errors,
@@ -136,7 +148,8 @@ function formHelpers(req, res, next) {
         label_for : label_for,
         text_field_for : text_field_for,
         text_area_for : text_area_for,
-        form_field : form_field
+        form_field : form_field,
+        selected : selected
     });
 
     next();

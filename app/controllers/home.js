@@ -10,8 +10,31 @@ var homeController = (function () {
         });
     }
 
+    function builder(req, res) {
+        API.findById(req.params[0], function (err, api) {
+            var api_url = 'http://' + req.headers.host + '/api/' + api._id,
+                qs = [],
+                key;
+
+            for (key in req.query) {
+                if (req.query.hasOwnProperty(key)) {
+                    if (req.query[key].trim() !== '') {
+                        qs.push(key + '=' + req.query[key]);
+                    }
+                }
+            }
+
+            if (qs.length > 0) {
+                api_url = api_url + '?' + qs.join('&');
+            }
+
+            res.render('home/browser', { title: api.title, api: api, api_url: api_url });
+        });
+    }
+
     return {
-        index : index
+        index : index,
+        builder : builder
     };
 }());
 

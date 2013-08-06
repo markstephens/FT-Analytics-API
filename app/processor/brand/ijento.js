@@ -5,29 +5,23 @@ var iJentoProcessor = (function () {
     var columns = [];
 
     function can_process(data, callback) {
-        //console.log('ijento.js', 'Can I process this?');
+        if (/https:\/\/ft\.ijento\.com\/query\/app/.test(data.url)) {
+            parseString(data.data, function (err, result) {
+                if (result.hasOwnProperty('results')) {
+                    if (result.results.hasOwnProperty('column-data') && result.results.hasOwnProperty('row')) {
+                        var last_update, date_str;
 
-        //if (/https:\/\/ft\.ijento\.com\/query\/app/.test(data.url)) {
-        parseString(data.data, function (err, result) {
-            if (result.hasOwnProperty('results')) {
-                //console.log('ijento.js', result.results['column-data']);
+                        // Date to parse: Wed Jul 17 07:52:37 BST 2013
+                        result.results.$['run-time'].match(/(\w{3}) (\w{3}) (\d{2}) (\d{2}):(\d{2}):(\d{2}) (\w{3}) (\d{4})/);
 
-                if (result.results.hasOwnProperty('column-data') && result.results.hasOwnProperty('row')) {
-                    var last_update, date_str;
+                        date_str = RegExp.$3 + ' ' + RegExp.$2 + ' ' + RegExp.$8 + ' ' + RegExp.$4 + ':' + RegExp.$5 + ':' + RegExp.$6;
+                        last_update = new Date(Date.parse(date_str));
 
-                    // Wed Jul 17 07:52:37 BST 2013
-                    result.results.$['run-time'].match(/(\w{3}) (\w{3}) (\d{2}) (\d{2}):(\d{2}):(\d{2}) (\w{3}) (\d{4})/);
-
-                    date_str = RegExp.$3 + ' ' + RegExp.$2 + ' ' + RegExp.$8 + ' ' + RegExp.$4 + ':' + RegExp.$5 + ':' + RegExp.$6;
-                    last_update = new Date(Date.parse(date_str));
-
-                    //console.log(result.results.$['run-time'], date_str, last_update);
-
-                    callback({date: last_update, results: result.results});
+                        callback({date: last_update, results: result.results});
+                    }
                 }
-            }
-        });
-        //}
+            });
+        }
     }
 
     function getRowValue(row, name) {
@@ -38,26 +32,30 @@ var iJentoProcessor = (function () {
                 return row[columns[i].key][0];
             }
         }
-
     }
 
     function process(chosen_columns, result, callback) {
-        //console.log('ijento.js', 'processing');
-
-        var key, final_data = [], processed_data = {}, results = result.results;
+        var key, uniq_cols = {}, processed_data = [], results = result.results;
 
         for (key in results['column-data'][0]) {
             if (results['column-data'][0].hasOwnProperty(key)) {
-                chosen_columns.forEach(function (col) {
-                    if (col.name === results['column-data'][0][key][0].$.label) {
-                        columns.push({
-                            name: results['column-data'][0][key][0].$.label,
-                            key: key,
-                            canSum: (results.hasOwnProperty('totalrow') ? (results.totalrow[0][key][0] === '-' ? false : true) : false),
-                            values: []
-                        });
-                    }
-                });
+                /*chosen_columns.forEach(function (col) {
+                 if (col.name === results['column-data'][0][key][0].$.label) {*/
+                uniq_cols[key] = {
+                    name: results['column-data'][0][key][0].$.label,
+                    key: key,
+                    canSum: (results.hasOwnProperty('totalrow') ? (results.totalrow[0][key][0] !== '-') : false),
+                    values: []
+                };
+                /*}
+                 });*/
+            }
+        }
+
+        // Turn columns into an array
+        for (key in uniq_cols) {
+            if (uniq_cols.hasOwnProperty(key)) {
+                columns.push(uniq_cols[key]);
             }
         }
 
@@ -87,21 +85,14 @@ var iJentoProcessor = (function () {
                 }
             }
 
-            if (!processed_data.hasOwnProperty(datetime)) {
-                processed_data[datetime] = [];
-            }
+            /*if (!processed_data.hasOwnProperty(datetime)) {
+             processed_data[datetime] = [];
+             }*/
 
-            processed_data[datetime].push(data);
+            processed_data.push({ date: datetime, data: data});
         });
 
-        // Turn it into an array
-        for (key in processed_data) {
-            if (processed_data.hasOwnProperty(key)) {
-                final_data.push({ date: key, data: processed_data[key] });
-            }
-        }
-
-        callback({ date: result.date, columns: columns, data: final_data }); // data should be in the format of { date: Date, data: [{ date: Date, data: {} }] }
+        callback({ date: result.date, columns: columns, data: processed_data }); // data should be in the format of { date: Date, data: [{ date: Date, data: {} }] }
     }
 
     return {

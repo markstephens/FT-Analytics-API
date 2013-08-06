@@ -23,7 +23,8 @@ var apiController = (function () {
             } else {
                 var date = 1,
                     query = {},
-                    params = merge.object(req.query); // Take a copy if the object as we're about to remove the date
+                    params = merge.object(req.query), // Take a copy if the object as we're about to remove the date
+                    param_key;
 
                 if (typeof req.query.date !== "undefined") {
                     date = req.query.date;
@@ -31,11 +32,13 @@ var apiController = (function () {
                 }
 
                 if (obLength(params) > 0) {
-                    query = {
-                        data: params
-                    };
+                    for (param_key in params) {
+                        if (params.hasOwnProperty(param_key)) {
+                            query['data.' + param_key] = params[param_key];
+                        }
+                    }
 
-                    console.log('QUERY: ', query);
+                    console.log('QUERY: ', merge.object(query, { _api : api._id }));
                 }
 
                 Data.filterByRelativeDate(date).find(merge.object(query, { _api : api._id })).select("-_id -_api -__v").exec(function (err, data) {

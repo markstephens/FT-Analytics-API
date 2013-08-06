@@ -13,7 +13,7 @@ var mongoose = require('mongoose'),
 var DataSchema = new Schema({
     _api : {type : Schema.Types.ObjectId, ref : 'API'},
     date : {type : Date},
-    data : [{type : Mixed}]
+    data : {type : Mixed}
 });
 
 /**

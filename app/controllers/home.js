@@ -28,7 +28,7 @@ var homeController = (function () {
                 api_url = api_url + '?' + qs.join('&');
             }
 
-            res.render('home/browser', { title: api.title, api: api, api_url: api_url });
+            res.render('home/builder', { title: api.title, api: api, api_url: api_url });
         });
     }
 

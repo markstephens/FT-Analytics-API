@@ -4,10 +4,18 @@
 
 <% if (api.columns.length > 0) { %>
 <% api.columns.forEach(function(column) { %>
-<label class="checkbox">
-    <input type="checkbox" name="api[columns][]" value="<%=column %>" checked="checked"> <%=column %>
-</label>
+<% if (column.values.length > 0) { %>
+<%- field_group_start('columns') %>
+<label class="control-label"><%=column.name %></label>
+<div class="controls">
+    <select name="<%=column.name %>">
+        <option value="">All</option>
+        <% column.values.forEach(function(value) { %>
+        <option value="<%=value %>"<%-selected(column.name, value) %>><%=value %></option>
+        <% }); %>
+    </select>
+</div>
+<%- field_group_end() %>
+<% } %>
 <% }); %>
-<% } else { %>
-<p class="muted">(Try grabbing the URL first!)</p>
 <% } %>

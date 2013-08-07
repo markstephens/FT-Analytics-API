@@ -44,7 +44,7 @@ function formHelpers(req, res, next) {
     }
 
     function field_group_start(field) {
-        return '<div class="control-group' + (has_error(field) ? " error" : "") + '">' + field_error(field);
+        return '<div class="form-group' + (has_error(field) ? " has-error" : "") + '">' + field_error(field);
     }
 
     function field_group_end() {
@@ -58,7 +58,7 @@ function formHelpers(req, res, next) {
 
         options = merge.object({
             label : field,
-            'class' : 'control-label'
+            'class' : 'col-lg-2 control-label'
         }, options);
 
         return '<label for="' + model + '_' + field + '" class="' + options['class'] + '">' + options.label + '</label>';
@@ -72,6 +72,7 @@ function formHelpers(req, res, next) {
         options = merge.object({
             type : 'text',
             placeholder : field,
+            'class' : 'form-control',
             required : false
         }, options);
 
@@ -83,6 +84,7 @@ function formHelpers(req, res, next) {
             ' placeholder="', options.placeholder, '"',
             ' value="' + value + '"',
             (options.required ? ' required="required"' : ''),
+            ' class="' + options['class'] + '"',
             ' />'
         ].join('');
     }
@@ -95,10 +97,11 @@ function formHelpers(req, res, next) {
         options = merge.object({
             placeholder : field,
             required : false,
+            'class' : 'form-control',
             rows : 3
         }, options);
 
-        return '<textarea id="' + model + '_' + field + '" name="' + model + '[' + field + ']" placeholder="' + options.placeholder + '" rows="' + options.rows + '">' + value + '</textarea>';
+        return '<textarea id="' + model + '_' + field + '" name="' + model + '[' + field + ']" placeholder="' + options.placeholder + '" rows="' + options.rows + '" class="' + options['class'] + '">' + value + '</textarea>';
     }
 
 
@@ -106,7 +109,7 @@ function formHelpers(req, res, next) {
         var html = [];
         html.push(field_group_start(field));
         html.push(label_for(model, field, options));
-        html.push('<div class="controls">');
+        html.push('<div class="col-lg-8">');
 
         switch (type) {
         case 'textarea':

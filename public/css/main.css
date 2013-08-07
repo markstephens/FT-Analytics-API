@@ -6,3 +6,10 @@ iframe {
     border: inset 2px #EEE;
     resize: vertical;
 }
+footer {
+    margin-top: 5em;
+    border-top: solid 1px #CCC;
+    padding-top: 2em;
+    color: #666;
+    font-size: 0.9em;
+}

@@ -1,17 +1,18 @@
 <% include ../layout/header %>
 
-<div class="hero-unit">
-    <h1>FT Analytics API</h1>
+<div class="panel panel-primary">
+    <div class="panel-heading"><h1>FT Analytics API</h1></div>
     <p>An API for Analytics data!</p>
 </div>
 
 <% if (apis.length > 0) { %>
-<h2>The APIs</h2>
-<ul>
-    <% apis.forEach(function (api) { %>
-    <li><%-link_to('builder', api, api.title) %> &ndash; <%-link_to('api', api, 'Just give me JSON!', { 'class':'btn btn-small btn-success' }) %></li>
-    <% }) %>
-</ul>
+<% apis.forEach(function (api) { %>
+<div class="panel">
+    <div class="panel-heading"><h2><%=api.title %></h2></div>
+    <%-format(api.description) %>
+    <div class="panel-footer"><%-link_to('builder', api, 'Build my feed', { 'class':'btn btn-xs btn-primary' }) %> <%-link_to('api', api, 'Just give me JSON!', { 'class':'btn btn-xs btn-success' }) %></div>
+</div>
+<% }) %>
 <% } %>
 
 <% include ../layout/footer %>

@@ -1,17 +1,15 @@
 <%-messages() %>
 
-<div class="row-fluid">
-    <div class="span6">
+<div class="row">
+    <div class="col-lg-6">
 
         <%-field_group_start('dataUrl') %>
         <%-label_for('api','dataUrl', {label: 'Data URL'}) %>
-        <div class="controls">
-            <div class="input-append">
-                <%-text_field_for('api','dataUrl', api.dataUrl, { placeholder: 'Data URL', required: true }) %>
-                <button class="btn" type="button" id="grab_api_url">Grab.</button>
-            </div>
+        <div class="col-lg-8">
+            <%-text_field_for('api','dataUrl', api.dataUrl, { placeholder: 'Data URL', required: true }) %>
             <span class="help-block">The URL of the API within iJento.</span>
         </div>
+        <button class="btn btn-primary" type="button" id="grab_api_url">Grab.</button>
         <%-field_group_end() %>
 
         <%-form_field('text', 'api', 'title', api.title, {label: 'Title', placeholder: 'Title', required: true, help: 'Give the API a name.'}) %>
@@ -20,31 +18,31 @@
 
         <%-form_field('text', 'api', 'url', api.url, {label: 'API URL', placeholder: 'API URL', required: true, help: 'The URL of the API.'}) %>
     </div>
-    <div class="span6">
-        <div class="control-group">
-            <div class="controls">
-                <fieldset>
-                    <legend>Columns</legend>
+    <div class="col-lg-6">
+        <div class="form-group">
+            <fieldset>
+                <legend>Columns</legend>
 
-                    <div id="api_columns">
-                        <% if (api.columns.length > 0) { %>
-                        <% api.columns.forEach(function(column) { %>
-                        <label class="checkbox">
-                            <input type="checkbox" name="api[columns][]" value="<%=column.name %>" checked="checked"> <%=column.name %>
-                        </label>
-                        <% }); %>
-                        <% } else { %>
-                        <p class="muted">(Try grabbing the URL first!)</p>
-                        <% } %>
-                    </div>
+                <div id="api_columns">
+                    <% if (api.columns.length > 0) { %>
+                    <% api.columns.forEach(function(column) { %>
+                    <label class="checkbox">
+                        <input type="checkbox" name="api[columns][]" value="<%=column.name %>" checked="checked"> <%=column.name %>
+                    </label>
+                    <% }); %>
+                    <% } else { %>
+                    <p class="muted">(Try grabbing the URL first!)</p>
+                    <% } %>
+                </div>
 
-                    <div class="form-inline input-append">
-                        <label for="api_new_column" class="inline hide">New column</label>
-                        <input type="text" id="api_new_column" name="api[new_column]" placeholder="New column" />
-                        <button class="btn" type="button">Add</button>
-                    </div>
-                </fieldset>
-            </div>
+                <div class="form-inline input-append">
+                    <div class="col-lg-8">
+                    <label for="api_new_column" class="inline hide">New column</label>
+                    <input type="text" id="api_new_column" class="form-control" name="api[new_column]" placeholder="New column" />
+                        </div>
+                    <button class="btn btn-default" type="button">Add</button>
+                </div>
+            </fieldset>
         </div>
     </div>
 </div>

@@ -1,19 +1,18 @@
 <!DOCTYPE html>
-<html class="no-js">
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title><%= title %> :: FT Analytics API</title>
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="/css/bootstrap.min.css" />
     <style>
-        body {
-            padding-top: 60px;
-            padding-bottom: 40px;
-        }
+            /*body {
+                padding-top: 60px;
+                padding-bottom: 40px;
+            }*/
     </style>
-    <link rel="stylesheet" href="/css/bootstrap-responsive.min.css">
     <link rel="stylesheet" href="/css/main.css">
 
     <!--[if lt IE 9]>
@@ -22,22 +21,13 @@
     <![endif]-->
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="navbar-inner">
-            <div class="container">
-                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </a>
-                <a class="brand" href="/">FT Analytics API</a>
-                <div class="nav-collapse collapse">
-                    <ul class="nav">
-                        <li<%-isActive('\/$') ? ' class="active"' : '' %>><a href="/">Home</a></li>
-                        <li<%-isActive('\/admin\/apis') ? ' class="active"' : '' %>><a href="/admin/apis">APIs</a></li>
-                    </ul>
-                </div><!--/.nav-collapse -->
-            </div>
+    <div class="navbar navbar-static-top navbar-inverse">
+        <div class="container">
+            <a class="navbar-brand" href="/">FT Analytics API</a>
+            <ul class="nav navbar-nav">
+                <li<%-isActive('\/$') ? ' class="active"' : '' %>><a href="/">Home</a></li>
+                <li<%-isActive('\/admin\/apis') ? ' class="active"' : '' %>><a href="/admin/apis">APIs</a></li>
+            </ul>
         </div>
     </div>
 

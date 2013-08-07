@@ -1,8 +1,10 @@
-    <footer>
-        <p>&copy; Financial Times</p>
-    </footer>
+</div> <!-- /container -->
 
-    </div> <!-- /container -->
+    <footer>
+        <div class="container">
+            <p>&copy; Financial Times</p>
+        </div>
+    </footer>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="/js/vendor/jquery-1.10.1.min.js"><\/script>')</script>
@@ -10,6 +12,5 @@
     <% if (req.url.match(/(home|api)/)) { %>
     <script src="/js/<%=RegExp.$1 %>.js"></script>
     <% } %>
-
 </body>
 </html>

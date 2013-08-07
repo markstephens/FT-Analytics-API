@@ -1,4 +1,5 @@
-var mongoose = require('mongoose'),
+var crypto = require('crypto'),
+    mongoose = require('mongoose'),
     API = mongoose.model('API'),
     Data = mongoose.model('Data'),
     merge = require("../../util/merge");
@@ -51,14 +52,32 @@ var apiController = (function () {
                     if (err) {
                         res.send(500, err);
                     } else {
+                        var md5 = crypto.createHash('md5'),
+                            contentType = 'application/json',
+                            response = JSON.stringify({
+                                name: api.title,
+                                query: merge.object({date: date + " days"}, params),
+                                num_results: data.length,
+                                results: data
+                            });
+
+                        if (req.params[1] === '.jsonp') {
+                            contentType = 'application/jsonp';
+                            response = 'function ' + req.query.callback + '() { return ' + response + '; }';
+                        }
+
                         // Cache headers
-                        // res.headers();
-                        res.send(200, {
-                            name: api.title,
-                            query: merge.object({date: date + " days"}, params),
-                            num_results: data.length,
-                            results: data
+                        res.set({
+                            'Content-Type': contentType + '; charset=utf-8',
+                            'Access-Control-Allow-Origin': '*',
+                            'Access-Control-Allow-Headers': "X-Requested-With",
+                            'Content-Length': response.length,
+                            'ETag': md5.update(response, 'utf8').digest('hex'),
+                            'Expires': (new Date((new Date()).getTime() + (1000 * 60 * 60 * 12))).toUTCString(),
+                            'Cache-Control': 'max-age=' + (60 * 60 * 12)
                         });
+
+                        res.send(200, response);
                     }
                 });
             }

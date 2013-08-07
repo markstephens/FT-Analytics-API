@@ -24,7 +24,7 @@ var routes = function (app) {
     crudRoutes(adminApisController);
 
     // Serve an API.
-    app.get((new RegExp('/api/([0-9a-z]+)')), apiController.show);
+    app.get((new RegExp('/api/([0-9a-z]+)(.(json|jsonp))?')), apiController.show);
 
     // Home pages
     app.get((new RegExp('/builder/([0-9a-z]+)')), homeController.builder);

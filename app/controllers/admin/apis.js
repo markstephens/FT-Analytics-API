@@ -46,7 +46,7 @@ var adminApisController = (function () {
                     return res.render(view_path + '/create', { title: 'New API', api: api });
                 }
 
-                req.flash('success', api.title + ' API successfully created');
+                req.flash('success', api.title + ' API successfully created.');
                 return res.redirect('/' + path + '/' + api._id);
             });
         } else {
@@ -65,7 +65,33 @@ var adminApisController = (function () {
 
     function update(req, res) {
         API.findById(req.params[0], function (err, api) {
-            return res.render(view_path + '/update', { title: 'Edit ' + api.title, api: api });
+
+            if (req.method === 'PUT') {
+                var key;
+
+                for (key in req.param('api')) {
+                    if (req.param('api').hasOwnProperty(key)) {
+                        if (key !== '_id') {
+                            if (req.param('api')[key] !== api[key]) {
+                                api[key] = req.param('api')[key];
+                            }
+                        }
+                    }
+                }
+
+                api.save(function (error) {
+                    if (error) {
+                        res.flash('error', error);
+                        return res.render(view_path + '/update', { title: 'Edit ' + api.title, api: api });
+                    }
+
+                    req.flash('success', api.title + ' API successfully updated.');
+                    return res.redirect('/' + path + '/' + api._id);
+                });
+            } else {
+                return res.render(view_path + '/update', { title: 'Edit ' + api.title, api: api });
+            }
+
         });
     }
 

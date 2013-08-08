@@ -37,6 +37,8 @@ var iJentoProcessor = (function () {
     function process(chosen_columns, result, callback) {
         var key, uniq_cols = {}, processed_data = [], results = result.results;
 
+        columns = [];
+
         for (key in results['column-data'][0]) {
             if (results['column-data'][0].hasOwnProperty(key)) {
                 /*chosen_columns.forEach(function (col) {

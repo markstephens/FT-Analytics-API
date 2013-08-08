@@ -22,26 +22,15 @@
         <div class="form-group">
             <fieldset>
                 <legend>Columns</legend>
-
-                <div id="api_columns">
+                <ul id="api_columns">
                     <% if (api.columns.length > 0) { %>
                     <% api.columns.forEach(function(column) { %>
-                    <label class="checkbox">
-                        <input type="checkbox" name="api[columns][]" value="<%=column.name %>" checked="checked"> <%=column.name %>
-                    </label>
+                    <li><%=column.name %></li>
                     <% }); %>
                     <% } else { %>
                     <p class="muted">(Try grabbing the URL first!)</p>
                     <% } %>
-                </div>
-
-                <div class="form-inline input-append">
-                    <div class="col-lg-8">
-                    <label for="api_new_column" class="inline hide">New column</label>
-                    <input type="text" id="api_new_column" class="form-control" name="api[new_column]" placeholder="New column" />
-                        </div>
-                    <button class="btn btn-default" type="button">Add</button>
-                </div>
+                </ul>
             </fieldset>
         </div>
     </div>

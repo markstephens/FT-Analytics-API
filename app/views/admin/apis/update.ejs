@@ -7,7 +7,6 @@
 <form action="/admin/apis/<%=api._id%>/edit" method="post" class="form-horizontal">
     <%-csrf() %>
     <input type="hidden" name="_method" value="PUT"/>
-    <input type="hidden" name="api[_id]" value="<%=api._id%>" />
 
     <fieldset>
         <legend>Update API</legend>

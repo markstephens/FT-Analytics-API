@@ -34,11 +34,7 @@
 
                     $('#api_columns').html('');
                     $.each(api.columns, function (i, label) {
-                        $('#api_columns').append([
-                            '<label class="checkbox">',
-                            '<input type="checkbox" name="api[columns][]" value="', label, '" checked="checked">', label,
-                            '</label>'
-                        ].join(''));
+                        $('#api_columns').append(['<li>', label, '</li>'].join(''));
                     });
                 }
             }

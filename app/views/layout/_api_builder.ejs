@@ -1,14 +1,15 @@
 <% if (api.columns.length > 0) { %>
-<div class="well well-large">
-    <h2>Configure your API</h2>
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <h2>Configure your API</h2>
+    </div>
     <form action="/builder/<%=api._id%>" method="get" class="form-inline">
         <label>
             Rolling date
-            <div class="input-append">
-                <input type="number" name="date" placeholder="1" value="<%=req.query.date %>" />
-                <span class="add-on">days</span>
-            </div>
+            <input type="number" name="date" placeholder="1" value="<%=req.query.date %>" maxlength="2" style="width:4em;" />
+            days
         </label>
+
 
         <% api.columns.forEach(function(column) { %>
         <% if (column.values.length > 0) { %>
@@ -24,7 +25,7 @@
         <% } %>
         <% }); %>
 
-        <button type="submit" class="btn btn-success">Build API</button>
+        <button type="submit" class="pull-right btn btn-success btn-sm">Build API</button>
     </form>
 </div>
 <% } %>

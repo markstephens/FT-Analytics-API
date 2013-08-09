@@ -1,8 +1,9 @@
 var homeController = require('../app/controllers/home'),
-    apiController = require('../app/controllers/api'),
+    chartsController = require('../app/controllers/charts'),
+    serviceController = require('../app/controllers/service'),
     // Admin
     adminApisController = require('../app/controllers/admin/apis'),
-    adminChartsController = require('../app/controllers/admin/charts');
+    adminProcessorsController = require('../app/controllers/admin/processors');
 
 var routes = function (app) {
 
@@ -16,15 +17,29 @@ var routes = function (app) {
         app.get((new RegExp('/' + controller.path)),                        controller.index);
     }
 
-    // Charts
-    crudRoutes(adminChartsController);
+    /*
+     * ADMIN start
+     */
 
     // API
     app.get((new RegExp('/' + adminApisController.path + '/([0-9a-z]+)/build')), adminApisController.build);
     crudRoutes(adminApisController);
 
+    // Processors
+    app.get((new RegExp('/' + adminProcessorsController.path + '/(\\w+)')), adminProcessorsController.show);
+    app.get((new RegExp('/' + adminProcessorsController.path)), adminProcessorsController.index);
+
+    /*
+     * ADMIN end
+     */
+
+
+    // Charts
+    crudRoutes(chartsController);
+
     // Serve an API.
-    app.get((new RegExp('/api/([0-9a-z]+)(.(json|jsonp))?')), apiController.show);
+    app.get((new RegExp('/api/([0-9a-z]+)(.(json|jsonp))?')), serviceController.api);
+    app.get((new RegExp('/chart/([0-9a-z]+)')), serviceController.chart);
 
     // Home pages
     app.get((new RegExp('/builder/([0-9a-z]+)')), homeController.builder);

@@ -2,9 +2,10 @@ var crypto = require('crypto'),
     mongoose = require('mongoose'),
     API = mongoose.model('API'),
     Data = mongoose.model('Data'),
-    merge = require("../../util/merge");
+    merge = require("../../util/merge"),
+    d3 = require('d3');
 
-var apiController = (function () {
+var serviceController = (function () {
     "use strict";
 
     function obLength(obj) {
@@ -17,7 +18,7 @@ var apiController = (function () {
         return length;
     }
 
-    function show(req, res) {
+    function api(req, res) {
         API.findById(req.params[0], function (err, api) {
             if (err) {
                 res.send(404, err);
@@ -84,9 +85,14 @@ var apiController = (function () {
         });
     }
 
+    function chart(req, res) {
+
+    }
+
     return {
-        show : show
+        api : api,
+        chart : chart
     };
 }());
 
-module.exports = apiController;
+module.exports = serviceController;

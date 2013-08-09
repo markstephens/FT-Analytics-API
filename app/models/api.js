@@ -42,7 +42,7 @@ var APISchema = new Schema({
     // Essential columns
     title: {type : String, 'default' : '', trim : true},
     description: {type : String, 'default' : '', trim : true},
-    url: {type : String, 'default' : '', trim : true},
+    frequency: {type : String, 'default' : 'day'},
 
     // Data info
     dataUrl: {type : String, 'default' : '', trim : true},
@@ -65,7 +65,6 @@ APISchema.path('title').required(true);
 APISchema.path('dataUrl').required(true).validate(function (url) {
     return (/^(https?:\/\/)?([\da-z\.\-]+)(\.([a-z\.]{2,6}))?(:\d+)?([\/\.\w])+(\?([\/\w \.\-%&=]*))?$/).test(url.trim());
 }, 'Data url must be a valid URL.');
-APISchema.path('url').required(true);
 
 /**
  * Virtuals

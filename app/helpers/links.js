@@ -9,10 +9,11 @@ function linkHelpers(req, res, next) {
 
         options = merge.object({
             title : label,
-            'class' : ''
+            'class' : '',
+            target: ''
         }, options);
 
-        return '<a href="' + model + '/' + object._id + '" title="' + options.title + '" class="' + options['class'] + '">' + label + '</a>';
+        return '<a href="' + model + '/' + object._id + '" title="' + options.title + '" class="' + options['class'] + '" target="' + options.target + '">' + label + '</a>';
     }
 
     res.locals({

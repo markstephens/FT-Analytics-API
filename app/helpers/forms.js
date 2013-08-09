@@ -2,13 +2,6 @@ var merge = require('../../util/merge');
 
 function formHelpers(req, res, next) {
 
-    /*if (typeof req.flash !== 'undefined') {
-     res.locals.info = req.flash('info');
-     res.locals.errors = req.flash('errors');
-     res.locals.success = req.flash('success');
-     res.locals.warning = req.flash('warning');
-     }*/
-
     function csrf() {
         return '<input type="hidden" name="_csrf" value="' + req.session._csrf + '" />';
     }
@@ -57,11 +50,12 @@ function formHelpers(req, res, next) {
         }
 
         options = merge.object({
+            id: model + '_' + field,
             label : field,
             'class' : 'col-lg-2 control-label'
         }, options);
 
-        return '<label for="' + model + '_' + field + '" class="' + options['class'] + '">' + options.label + '</label>';
+        return '<label for="' + options.id + '" class="' + options['class'] + '">' + options.label + '</label>';
     }
 
     function text_field_for(model, field, value, options) {
@@ -70,6 +64,8 @@ function formHelpers(req, res, next) {
         }
 
         options = merge.object({
+            id: model + '_' + field,
+            name: model + '[' + field + ']',
             type : 'text',
             placeholder : field,
             'class' : 'form-control',
@@ -79,8 +75,8 @@ function formHelpers(req, res, next) {
         return [
             '<input',
             ' type="', options.type, '"',
-            ' id="', model, '_', field, '"',
-            ' name="', model, '[', field, ']"',
+            ' id="', options.id, '"',
+            ' name="', options.name, '"',
             ' placeholder="', options.placeholder, '"',
             ' value="' + value + '"',
             (options.required ? ' required="required"' : ''),
@@ -95,15 +91,46 @@ function formHelpers(req, res, next) {
         }
 
         options = merge.object({
+            id: model + '_' + field,
+            name: model + '[' + field + ']',
             placeholder : field,
             required : false,
             'class' : 'form-control',
             rows : 3
         }, options);
 
-        return '<textarea id="' + model + '_' + field + '" name="' + model + '[' + field + ']" placeholder="' + options.placeholder + '" rows="' + options.rows + '" class="' + options['class'] + '">' + value + '</textarea>';
+        return '<textarea id="' + options.id + '" name="' + options.name + '" placeholder="' + options.placeholder + '" rows="' + options.rows + '" class="' + options['class'] + '">' + value + '</textarea>';
     }
 
+    function select_for(model, field, value, options) {
+        if (typeof options === "undefined") {
+            options = {};
+        }
+
+        options = merge.object({
+            id: model + '_' + field,
+            name: model + '[' + field + ']',
+            required : false,
+            'class' : 'form-control',
+            values : []
+        }, options);
+
+        var html = [];
+
+        html.push('<select id="' + options.id + '" name="' + options.name + '" class="' + options['class'] + '">');
+
+        if (options.blank) {
+            html.push('<option value="">' + options.blank + '</option>');
+        }
+
+        options.values.forEach(function (val) {
+            html.push('<option value="' + val + '"' + (val === value ? ' selected="selected"' : '') + '>' + val + '</option>');
+        });
+
+        html.push('</select>');
+
+        return html;
+    }
 
     function form_field(type, model, field, value, options) {
         var html = [];
@@ -112,14 +139,15 @@ function formHelpers(req, res, next) {
         html.push('<div class="col-lg-8">');
 
         switch (type) {
-        case 'textarea':
-            html.push(text_area_for(model, field, value, options));
-            break;
-        default:
-            html.push(text_field_for(model, field, value, options));
+            case 'textarea':
+                html.push(text_area_for(model, field, value, options));
+                break;
+            case 'select':
+                html.push(select_for(model, field, value, options));
+                break;
+            default:
+                html.push(text_field_for(model, field, value, options));
         }
-
-
 
         if (options.help) {
             html.push('<span class="help-block">' + options.help + '</span>');
@@ -151,6 +179,7 @@ function formHelpers(req, res, next) {
         label_for : label_for,
         text_field_for : text_field_for,
         text_area_for : text_area_for,
+        select_for : select_for,
         form_field : form_field,
         selected : selected
     });

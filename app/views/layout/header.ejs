@@ -21,13 +21,21 @@
     <![endif]-->
 </head>
 <body>
-    <div class="navbar navbar-static-top navbar-inverse">
+    <div class="navbar navbar-fixed-top navbar-inverse">
         <div class="container">
             <a class="navbar-brand" href="/">FT Analytics API</a>
             <ul class="nav navbar-nav">
-                <li<%-isActive('\/$') ? ' class="active"' : '' %>><a href="/">Home</a></li>
-                <li<%-isActive('\/admin\/apis') ? ' class="active"' : '' %>><a href="/admin/apis">APIs</a></li>
+                <li<%-isActive('\/$') ? ' class="active"' : '' %>><a href="/">APIs</a></li>
+                <li<%-isActive('\/charts') ? ' class="active"' : '' %>><a href="/charts">Charts</a></li>
             </ul>
+
+            <div class="pull-right">
+                <p class="navbar-text">Admin</p>
+                <ul class="nav navbar-nav">
+                    <li<%-isActive('\/admin\/apis') ? ' class="active"' : '' %>><a href="/admin/apis">APIs</a></li>
+                    <li<%-isActive('\/admin\/processors') ? ' class="active"' : '' %>><a href="/admin/processors">Processors</a></li>
+                </ul>
+            </div>
         </div>
     </div>
 

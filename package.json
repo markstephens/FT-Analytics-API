@@ -19,7 +19,8 @@
         "express": "3.3.x",
         "ejs": "*",
         "xml2js" : "0.2.x",
-        "flashify" : "0.1.x"
+        "flashify" : "0.1.x",
+        "d3" : "3.2.x"
     },
 
     "engines": {

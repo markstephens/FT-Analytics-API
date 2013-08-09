@@ -5,32 +5,32 @@ var mongoose = require('mongoose'),
 var chartsController = (function () {
     "use strict";
 
-    var path = 'admin/apis/([0-9a-z]+)/charts',
-        view_path = 'admin/charts';
+    var path = 'charts',
+        view_path = 'charts';
 
     function index(req, res) {
-        API.findById(req.params[0]).populate('charts').exec(function (err, api) {
-            res.render(view_path + '/index', { title: 'Charts for ' + api.title, api: api });
+        Chart.find(function (err, charts) {
+            res.render(view_path + '/index', { title: 'Charts', charts: charts });
         });
     }
 
     function show(req, res) {
-        API.findById(req.params[0], function (err, api) {
-            res.render(view_path + '/show', { title: api.title, api: api });
+        Chart.findById(req.params[0], function (err, chart) {
+            res.render(view_path + '/show', { title: chart.title, chart: chart });
         });
     }
 
     function create(req, res) {
-        API.findById(req.params[0], function (err, api) {
-            var chart;
+        var chart, api;
 
+        API.find(function (err, apis) {
             if (req.method === 'POST') {
                 chart = new Chart(req.param('chart'));
 
                 chart.save(function (error) {
                     if (error) {
                         res.flash('error', error);
-                        return res.render(view_path + '/create', { title: 'New Chart for ' + api.title, api: api, chart: chart });
+                        return res.render(view_path + '/create', { title: 'New Chart', chart: chart, apis: apis });
                     }
 
                     req.flash('success', chart.title + ' Chart successfully created');
@@ -38,9 +38,16 @@ var chartsController = (function () {
                 });
             } else {
                 chart = new Chart();
-                return res.render(view_path + '/create', { title: 'New Chart for ' + api.title, api: api, chart: chart });
-            }
+                if (req.query.api) {
+                    apis.forEach(function (a) {
+                        if (a._id.toString() === req.query.api) {
+                            api = a;
+                        }
+                    });
+                }
 
+                return res.render(view_path + '/create', { title: 'New Chart', chart: chart, apis: apis, api: api });
+            }
         });
     }
 

@@ -1,0 +1,15 @@
+<% include ../../layout/header %>
+
+<div class="page-header">
+    <h1>Processors</h1>
+</div>
+
+<% if (processors.length > 0) { %>
+<% processors.forEach(function (processor) { %>
+<ul>
+    <li><%-link_to(req.url, processor, processor) %></li>
+</ul>
+<% }) %>
+<% } %>
+
+<% include ../../layout/footer %>

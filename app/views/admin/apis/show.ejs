@@ -19,11 +19,15 @@
             <% api.columns.forEach(function(column) { %>
             <li><%=column.name %>
                 <% if (column.values.length > 0) { %>
+                <% if (column.values.length > 100) { %>
+                <ul><li><span class="label label-warning">Warning</span> (Too many to show)</li></ul>
+                <% } else { %>
                 <ul>
                     <% column.values.forEach(function(value) { %>
                     <li><%=value %></li>
                     <% }); %>
                 </ul>
+                <% } %>
                 <% } %>
             </li>
             <% }); %>

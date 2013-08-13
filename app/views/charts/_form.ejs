@@ -15,7 +15,7 @@
 
 <% api.columns.forEach(function(column) { %>
 <% if (column.values.length > 0) { %>
-<%-form_field('select', 'chart', 'set', '', { id: 'chart_set_' + column.name, name:'chart[set]['+column.name+']', label: column.name, values: column.values, blank: 'All' }) %>
+<%-form_field((column.values.length > 100 ? 'text' : 'select'), 'chart', 'set', '', { id: 'chart_set_' + column.name, name:'chart[set]['+column.name+']', label: column.name, values: column.values, blank: 'All' }) %>
 <% } %>
 <% }); %>
 

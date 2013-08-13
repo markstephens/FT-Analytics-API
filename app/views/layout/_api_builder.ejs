@@ -15,11 +15,16 @@
         <% if (column.values.length > 0) { %>
         <label>
             <%=column.name %>
+            <% if (column.values.length > 100) { %>
+            <input type="text" name="<%=column.name %>" value="<%=(req.query.hasOwnProperty(column.name) ? req.query[column.name] : '') %>" placeholder="(Too many values to show - please enter manually)" /></option>
+            <% } else { %>
             <select name="<%=column.name %>">
                 <option value="">All</option>
+
                 <% column.values.forEach(function(value) { %>
                 <option value="<%=value %>"<%-selected(column.name, value) %>><%=value %></option>
                 <% }); %>
+                <% } %>
             </select>
         </label>
         <% } %>

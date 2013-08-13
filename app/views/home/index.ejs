@@ -7,11 +7,19 @@
 
 <% if (apis.length > 0) { %>
 <% apis.forEach(function (api, index) { %>
-<div class="col-lg-5<%=(index % 2 === 0 ? '' : ' col-lg-offset-1') %> panel panel-info">
-    <div class="panel-heading"><h2><%=api.title %></h2></div>
-    <%-format(api.description) %>
-    <div class="panel-footer"><%-link_to('builder', api, 'Build my feed', { 'class':'btn btn-xs btn-primary' }) %> <%-link_to('api', api, 'Just give me JSON!', { 'class':'btn btn-xs btn-success', 'target':'_blank' }) %></div>
+<% if (index % 2 !== 0) { %>
+<div class="row">
+    <% } %>
+    <div class="col-lg-6">
+        <div class="panel panel-info">
+            <div class="panel-heading"><h2><%=api.title %></h2></div>
+            <%-format(api.description) %>
+            <div class="panel-footer"><%-link_to('builder', api, 'Build my feed', { 'class':'btn btn-xs btn-primary' }) %> <%-link_to('api', api, 'Just give me JSON!', { 'class':'btn btn-xs btn-success', 'target':'_blank' }) %></div>
+        </div>
+    </div>
+    <% if (index % 2 !== 0) { %>
 </div>
+<% } %>
 <% }) %>
 <% } %>
 

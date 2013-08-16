@@ -3,6 +3,7 @@ var crypto = require('crypto'),
     API = mongoose.model('API'),
     Data = mongoose.model('Data'),
     merge = require("../../util/merge"),
+    MemJS = require("memjs").Client,
     d3 = require('d3');
 
 var serviceController = (function () {
@@ -19,6 +20,27 @@ var serviceController = (function () {
     }
 
     function api(req, res) {
+        var memjs = MemJS.create(),
+            md5 = crypto.createHash('md5'),
+            cache_path = 'TODO';
+
+        // Common headers to send
+        res.set({
+            'Content-Type': 'application/' + (req.query.hasOwnProperty('callback') ? 'script' : 'json') + '; charset=utf-8',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': 'X-Requested-With',
+            'Access-Control-Allow-Credentials': 'true'
+        });
+
+        /*memjs.get(cache_path, function (err, value) {
+         console.log('MEMJS: ', value);
+
+         if (value) {
+         // Stored cache headers
+         res.set(value.headers);
+         res.set({ 'From-Cache' : 'true' });
+         res.send(value.response.toString());
+         } else {*/
         API.findById(req.params[0], function (err, api) {
             if (err) {
                 res.send(404, err);
@@ -53,36 +75,38 @@ var serviceController = (function () {
                     if (err) {
                         res.send(500, err);
                     } else {
-                        var md5 = crypto.createHash('md5'),
-                            contentType = 'application/json',
-                            response = JSON.stringify({
+                        var response = JSON.stringify({
                                 name: api.title,
                                 query: merge.object({date: date + " days"}, params),
                                 num_results: data.length,
                                 results: data
-                            });
+                            }),
+                            headers,
+                            expiry_time = (60 * 60 * 12); // TODO set this properly - depending on update interval
 
-                        if (req.params[1] === '.jsonp') {
-                            contentType = 'application/jsonp';
+                        if (req.query.hasOwnProperty('callback')) {
                             response = 'function ' + req.query.callback + '() { return ' + response + '; }';
                         }
 
                         // Cache headers
-                        res.set({
-                            'Content-Type': contentType + '; charset=utf-8',
-                            'Access-Control-Allow-Origin': '*',
-                            'Access-Control-Allow-Headers': "X-Requested-With",
+                        headers = {
                             'Content-Length': response.length,
                             'ETag': md5.update(response, 'utf8').digest('hex'),
-                            'Expires': (new Date((new Date()).getTime() + (1000 * 60 * 60 * 12))).toUTCString(),
-                            'Cache-Control': 'max-age=' + (60 * 60 * 12)
-                        });
+                            'Expires': (new Date((new Date()).getTime() + (1000 * expiry_time))).toUTCString(),
+                            'Cache-Control': 'max-age=' + expiry_time
+                        };
 
+                        // Save in cache for next time
+                        memjs.set(cache_path, { headers : headers, response: response }, function () {}, expiry_time);
+
+                        res.set(headers);
                         res.send(200, response);
                     }
                 });
             }
         });
+        /*}
+         });*/
     }
 
     function chart(req, res) {

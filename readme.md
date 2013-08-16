@@ -17,12 +17,11 @@ Installation
 
 Running
 -------
-- Set environment variables (or add them to the command line when starting the app)
-  - TODO: Mongo stuff
-  - TODO: Memcache stuff
-  - TODO: API keys stuff
 - Start Mongo
 - Start Memcache
+- Set environment variables (or add them to the command line when starting the app)
+  - [Memcache stuff](https://github.com/alevy/memjs#configuration)
+  - TODO: API keys stuff
 - Start the app `node app`
 
 Deploying to production

@@ -1,7 +1,7 @@
 FT Analytics API
 ================
 
-An API of Analytics data. Data can be collected in many formats and served in a consistant way. Historical data can be stored.
+An API of Analytics data. Data can be collected in many formats and served in a consistent way. Historical data can be stored.
 
 Requirements
 ------------

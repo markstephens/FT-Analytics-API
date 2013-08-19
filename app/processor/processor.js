@@ -9,7 +9,7 @@ var processor = (function () {
     var brands_path = config.root + '/app/processor/brand';
 
     function getData(url, callback) {
-        curl.data(url, function (response, data) {
+        curl.data(url, { auth: process.env.IJENTO_AUTH }, function (response, data) {
             if (response.statusCode === 200) {
                 callback({
                     url: url,

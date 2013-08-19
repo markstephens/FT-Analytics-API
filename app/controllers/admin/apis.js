@@ -52,7 +52,7 @@ var adminApisController = (function () {
         } else {
             if (req.xhr) {
                 // TODO Use processor.head
-                curl.data(req.query.url, function (response, data) {
+                curl.data(req.query.url, { auth: process.env.IJENTO_AUTH }, function (response, data) {
                     res.set('Content-Type', response.headers['content-type']);
                     return res.send(response.statusCode, data);
                 });

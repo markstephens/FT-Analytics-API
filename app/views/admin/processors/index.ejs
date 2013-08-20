@@ -7,7 +7,7 @@
 <% if (processors.length > 0) { %>
 <% processors.forEach(function (processor) { %>
 <ul>
-    <li><%-link_to(req.url, processor, processor) %></li>
+    <li><a href="<%=req.url + '/' + processor %>"><%=processor %></a></li>
 </ul>
 <% }) %>
 <% } %>

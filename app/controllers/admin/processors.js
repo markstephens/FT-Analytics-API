@@ -5,31 +5,32 @@ var adminProcessorsController = (function () {
     "use strict";
 
     var path = 'admin/processors',
-        view_path = 'admin/processors';
+        view_path = 'admin/processors',
+        processors = [];
+
+    fs.readdirSync(pathModule.normalize(__dirname + '../../../processor/brand')).forEach(function (file) {
+        if (file.indexOf('.js') !== -1) {
+            processors.push(file);
+        }
+    });
 
     function index(req, res) {
-        var processors = [];
-
-        fs.readdirSync(pathModule.normalize(__dirname + '../../../processor/brand')).forEach(function (file) {
-            if (file.indexOf('.js') !== -1) {
-                processors.push(file);
-            }
-        });
-
         res.render(view_path + '/index', { title: 'Processors', processors: processors });
     }
 
     function show(req, res) {
-        API.findById(req.params[0], function (err, api) {
-            if (typeof req.param('populateData') !== "undefined") {
-                api.populateData();
+        var index = processors.indexOf(req.params[0]),
+            processor;
 
-                req.flash('success', api.title + ' API is checking for data. Please wait...');
-                return res.redirect('/' + path + '/' + api._id);
-            }
-
-            res.render(view_path + '/show', { title: api.title, api: api });
-        });
+        if (index > -1) {
+            processor = {
+                title: processors[index],
+                conditions: require(pathModule.normalize(__dirname + '../../../processor/brand/' + processors[index])).can_process.toString()
+            };
+            return res.render(view_path + '/show', { title: processor.title, processor: processor });
+        } else {
+            return res.redirect('/' + path);
+        }
     }
 
     return {

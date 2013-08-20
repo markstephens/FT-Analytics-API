@@ -8,6 +8,7 @@ var config = (function () {
 
     var default_config = {
         db: 'mongodb://localhost/analytics_api',
+        cache: false,
         root: rootPath,
         app: {
             name: 'FT Analytics API'
@@ -20,7 +21,8 @@ var config = (function () {
             db: 'mongodb://localhost/analytics_api_test'
         }),
         production: merge.object(default_config, {
-            db: process.env.MONGOLAB_URI
+            db: process.env.MONGOLAB_URI,
+            cache: true
         })
     };
 }());

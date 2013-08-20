@@ -1,4 +1,6 @@
-var crypto = require('crypto'),
+var env = process.env.NODE_ENV || 'development',
+    config = require('../../config/config')[env],
+    crypto = require('crypto'),
     mongoose = require('mongoose'),
     API = mongoose.model('API'),
     Data = mongoose.model('Data'),
@@ -19,28 +21,7 @@ var serviceController = (function () {
         return length;
     }
 
-    function api(req, res) {
-        var memjs = MemJS.create(),
-            md5 = crypto.createHash('md5'),
-            cache_path = 'TODO';
-
-        // Common headers to send
-        res.set({
-            'Content-Type': 'application/' + (req.query.hasOwnProperty('callback') ? 'script' : 'json') + '; charset=utf-8',
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Headers': 'X-Requested-With',
-            'Access-Control-Allow-Credentials': 'true'
-        });
-
-        /*memjs.get(cache_path, function (err, value) {
-         console.log('MEMJS: ', value);
-
-         if (value) {
-         // Stored cache headers
-         res.set(value.headers);
-         res.set({ 'From-Cache' : 'true' });
-         res.send(value.response.toString());
-         } else {*/
+    function render_api(req, res, memJS, cache_path) {
         API.findById(req.params[0], function (err, api) {
             if (err) {
                 res.send(404, err);
@@ -55,6 +36,10 @@ var serviceController = (function () {
                         date = req.query.date;
                     }
                     delete params.date;
+                }
+
+                if (params.hasOwnProperty('callback')) {
+                    delete params.callback;
                 }
 
                 if (obLength(params) > 0) {
@@ -91,13 +76,15 @@ var serviceController = (function () {
                         // Cache headers
                         headers = {
                             'Content-Length': response.length,
-                            'ETag': md5.update(response, 'utf8').digest('hex'),
+                            'ETag': crypto.createHash('md5').update(response, 'utf8').digest('hex'),
                             'Expires': (new Date((new Date()).getTime() + (1000 * expiry_time))).toUTCString(),
                             'Cache-Control': 'max-age=' + expiry_time
                         };
 
                         // Save in cache for next time
-                        memjs.set(cache_path, { headers : headers, response: response }, function () {}, expiry_time);
+                        if (config.cache) {
+                            memJS.set(cache_path, JSON.stringify({ headers : headers, response: response }), function () {}, expiry_time);
+                        }
 
                         res.set(headers);
                         res.send(200, response);
@@ -105,8 +92,36 @@ var serviceController = (function () {
                 });
             }
         });
-        /*}
-         });*/
+    }
+
+    function api(req, res) {
+        // Common headers to send
+        res.set({
+            'Content-Type': 'application/' + (req.query.hasOwnProperty('callback') ? 'javascript' : 'json') + '; charset=utf-8',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': 'X-Requested-With',
+            'Access-Control-Allow-Credentials': 'true'
+        });
+
+        if (config.cache) {
+            var memJS = MemJS.create(),
+                cache_path = crypto.createHash('md5').update(req.url).digest('hex');
+
+            memJS.get(cache_path, function (err, value) {
+                if (value) {
+                    value = JSON.parse(value.toString());
+
+                    // Stored cache headers
+                    res.set(value.headers);
+                    res.set({ 'From-Cache' : 'true' }); // So we can tell what's going on
+                    res.send(value.response);
+                } else {
+                    render_api(req, res, memJS, cache_path);
+                }
+            });
+        } else {
+            render_api(req, res);
+        }
     }
 
     function chart(req, res) {

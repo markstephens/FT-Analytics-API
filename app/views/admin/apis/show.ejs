@@ -4,6 +4,8 @@
     <h1><%=api.title %></h1>
 </div>
 
+<p><a href="./" class="btn btn-default">Back</a></p>
+
 <div class="panel">
     <div class="pull-right"><a href="<%=req.url %>/edit" class="btn btn-primary btn-sm">Edit</a></div>
     <%-format(api.description) %>
@@ -54,5 +56,7 @@
 </div>
 
 <% include ../../layout/_api_builder %>
+
+<p><a href="./" class="btn btn-default">Back</a></p>
 
 <% include ../../layout/footer %>

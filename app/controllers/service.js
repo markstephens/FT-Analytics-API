@@ -6,7 +6,7 @@ var env = process.env.NODE_ENV || 'development',
     Data = mongoose.model('Data'),
     merge = require("../../util/merge"),
     MemJS = require("memjs").Client,
-    d3 = require('d3');
+    analytics_api = require("../../util/analytics_api");
 
 var serviceController = (function () {
     "use strict";
@@ -60,11 +60,12 @@ var serviceController = (function () {
                     if (err) {
                         res.send(500, err);
                     } else {
-                        var response = JSON.stringify({
+                        var grouped_data = analytics_api.group(data),
+                            response = JSON.stringify({
                                 name: api.title,
                                 query: merge.object({date: date + " days"}, params),
-                                num_results: data.length,
-                                results: data
+                                num_results: obLength(grouped_data),
+                                results: grouped_data
                             }),
                             headers,
                             expiry_time = (60 * 60 * 12); // TODO set this properly - depending on update interval

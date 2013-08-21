@@ -1,5 +1,4 @@
 var homeController = require('../app/controllers/home'),
-    chartsController = require('../app/controllers/charts'),
     serviceController = require('../app/controllers/service'),
     // Admin
     adminApisController = require('../app/controllers/admin/apis'),
@@ -34,15 +33,13 @@ var routes = function (app) {
      */
 
 
-    // Charts
-    crudRoutes(chartsController);
-
     // Serve an API.
     app.get((new RegExp('/api/([0-9a-z]+)(.(json|jsonp))?')), serviceController.api);
     app.get((new RegExp('/chart/([0-9a-z]+)')), serviceController.chart);
 
     // Home pages
-    app.get((new RegExp('/builder/([0-9a-z]+)')), homeController.builder);
+    app.get((new RegExp('/api_builder/([0-9a-z]+)')), homeController.api_builder);
+    app.get((new RegExp('/chart_builder/([0-9a-z]+)')), homeController.chart_builder);
     app.get('/', homeController.index);
 };
 

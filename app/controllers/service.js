@@ -125,7 +125,15 @@ var serviceController = (function () {
     }
 
     function chart(req, res) {
+        API.findById(req.params[0], function (err, api) {
+            var api_url = analytics_api.build_url('api', api, req),
+                params = merge.object(req.query);
 
+            delete params.chart_title;
+            delete params.date;
+
+            res.render('service/chart', { api_url: api_url, chart_title : req.query.chart_title || '', date : req.query.date || 1, params : params });
+        });
     }
 
     return {

@@ -1,0 +1,17 @@
+<% if (api.columns.length > 0) { %>
+<div class="form-group">
+    <label for="date" class="col-lg-2 control-label">Rolling date</label>
+    <div class="col-lg-1">
+        <input type="number" name="date" id="date" placeholder="1" value="<%=req.query.date %>" maxlength="2" style="width:4em;" />
+    </div>
+    <div class="col-lg-pull-1">
+        <p>days</p>
+    </div>
+</div>
+
+<% api.columns.forEach(function(column) { %>
+<% if (column.values.length > 0) { %>
+<%-form_field((column.values.length > 100 ? 'text' : 'select'), 'builder', column.name, req.query[column.name], { name:column.name, label: column.name, values: column.values, blank: 'All' }) %>
+<% } %>
+<% }); %>
+<% } %>

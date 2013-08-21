@@ -1,4 +1,5 @@
-var mongoose = require('mongoose'),
+var analytics_api = require("../../util/analytics_api"),
+    mongoose = require('mongoose'),
     API = mongoose.model('API');
 
 var homeController = (function () {
@@ -10,31 +11,26 @@ var homeController = (function () {
         });
     }
 
-    function builder(req, res) {
+    function api_builder(req, res) {
         API.findById(req.params[0], function (err, api) {
-            var api_url = 'http://' + req.headers.host + '/api/' + api._id,
-                qs = [],
-                key;
+            var api_url = analytics_api.build_url('api', api, req);
 
-            for (key in req.query) {
-                if (req.query.hasOwnProperty(key)) {
-                    if (req.query[key].trim() !== '') {
-                        qs.push(key + '=' + req.query[key]);
-                    }
-                }
-            }
+            res.render('home/api_builder', { title: api.title, api: api, api_url: api_url });
+        });
+    }
 
-            if (qs.length > 0) {
-                api_url = api_url + '?' + qs.join('&');
-            }
+    function chart_builder(req, res) {
+        API.findById(req.params[0], function (err, api) {
+            var chart_url = analytics_api.build_url('chart', api, req);
 
-            res.render('home/builder', { title: api.title, api: api, api_url: api_url });
+            res.render('home/chart_builder', { title: 'New Chart', api: api, chart_url: chart_url });
         });
     }
 
     return {
         index : index,
-        builder : builder
+        api_builder : api_builder,
+        chart_builder : chart_builder
     };
 }());
 

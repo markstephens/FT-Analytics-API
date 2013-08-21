@@ -1,0 +1,30 @@
+<% include ../layout/header %>
+
+<div class="page-header">
+    <h1><%=api.title %></h1>
+</div>
+
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <h2>Configure your Chart</h2>
+    </div>
+
+    <form action="<%=req.path %>" method="get" class="form-horizontal">
+
+        <%-form_field('text', 'builder', 'chart_title', (req.query.chart_title ? req.query.chart_title : ''), {name: 'chart_title', label: 'Title', placeholder: 'Title', required: true, help: 'Give the Chart a name.'}) %>
+
+        <% include ../layout/_api_fields %>
+
+        <div class="col-lg-offset-2">
+            <p><button class="btn btn-success btn-sm">Build chart</button></p>
+        </div>
+
+    </form>
+</div>
+
+<p><a href="<%= chart_url %>" target="_blank"><%= chart_url %></a></p>
+<iframe src="<%= chart_url %>">Loading Chart <%= chart_url %></iframe>
+
+<p><a href="/" class="btn btn-default">Back</a></p>
+
+<% include ../layout/footer %>

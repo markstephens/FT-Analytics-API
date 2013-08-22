@@ -4,6 +4,24 @@ var iJentoProcessor = (function () {
 
     var columns = [];
 
+    function startup_requirements(util) {
+        if (process.env.IJENTO_AUTH) {
+            util.puts(' - iJento\t\033[32m[ OK ]\033[m');
+        } else {
+            util.puts(' - iJento: IJENTO_AUTH environment variable missing - you won\'t be able to fetch new data\t\033[32m[ OK ]\033[m');
+        }
+    }
+
+    function can_get(url) {
+        if (/https:\/\/ft\.ijento\.com\/query\/app/.test(url) && process.env.IJENTO_AUTH) {
+            return {
+                auth: process.env.IJENTO_AUTH
+            };
+        } else {
+            return false;
+        }
+    }
+
     function can_process(data, callback) {
         if (/https:\/\/ft\.ijento\.com\/query\/app/.test(data.url)) {
             parseString(data.data, function (err, result) {
@@ -34,7 +52,7 @@ var iJentoProcessor = (function () {
         }
     }
 
-    function process(chosen_columns, result, callback) {
+    function do_process(chosen_columns, result, callback) {
         var key, uniq_cols = {}, processed_data = [], results = result.results;
 
         columns = [];
@@ -98,8 +116,10 @@ var iJentoProcessor = (function () {
     }
 
     return {
+        startup_requirements : startup_requirements,
+        can_get : can_get,
         can_process : can_process,
-        process : process
+        process : do_process
     };
 }());
 

@@ -6,14 +6,25 @@ var curl = require("../../util/curl"),
 
 var processor = (function () {
 
-    var brands_path = config.root + '/app/processor/brand';
+    var processors_path = config.root + '/app/processor/brand',
+        processors = [];
+
+    fs.readdirSync(processors_path).forEach(function (file) {
+        if (file.indexOf('.js') !== -1) {
+            processors.push(require(processors_path + '/' + file));
+        }
+    });
 
     function getData(url, callback) {
-        curl.data(url, { auth: process.env.IJENTO_AUTH }, function (response, data) {
-            if (response.statusCode === 200) {
-                callback({
-                    url: url,
-                    data: data
+        processors.forEach(function (processor) {
+            if (processor.can_get(url)) {
+                curl.data(url, processor.can_get(url), function (response, data) {
+                    if (response.statusCode === 200) {
+                        callback({
+                            url: url,
+                            data: data
+                        });
+                    }
                 });
             }
         });
@@ -21,29 +32,22 @@ var processor = (function () {
 
     function head(url, callback) {
         getData(url, function (data) {
-            fs.readdirSync(brands_path).forEach(function (file) {
-                if (file.indexOf('.js') !== -1) {
-                    var brand = require(brands_path + '/' + file);
-                    brand.can_process(data, callback);
-                }
+            processors.forEach(function (processor) {
+                processor.can_process(data, callback);
             });
         });
     }
 
     function process(model, callback) {
         getData(model.dataUrl, function (data) {
-            fs.readdirSync(brands_path).forEach(function (file) {
-                if (file.indexOf('.js') !== -1) {
-                    var brand = require(brands_path + '/' + file);
-
-                    brand.can_process(data, function (result) {
-                        if (result.date > model.lastDataUpdate) {
-                            brand.process(model.columns, result, callback);
-                        } else {
-                            console.log('No new data found');
-                        }
-                    });
-                }
+            processors.forEach(function (processor) {
+                processor.can_process(data, function (result) {
+                    if (result.date > model.lastDataUpdate) {
+                        processor.process(model.columns, result, callback);
+                    } else {
+                        console.log('No new data found');
+                    }
+                });
             });
         });
     }

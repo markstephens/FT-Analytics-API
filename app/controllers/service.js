@@ -11,16 +11,6 @@ var env = process.env.NODE_ENV || 'development',
 var serviceController = (function () {
     "use strict";
 
-    function obLength(obj) {
-        var length = 0, key;
-        for (key in obj ) {
-            if (obj.hasOwnProperty(key)) {
-                length = length + 1;
-            }
-        }
-        return length;
-    }
-
     function render_api(req, res, memJS, cache_path) {
         API.findById(req.params[0], function (err, api) {
             if (err) {
@@ -38,11 +28,14 @@ var serviceController = (function () {
                     delete params.date;
                 }
 
-                if (params.hasOwnProperty('callback')) {
-                    delete params.callback;
-                }
+                // Remove predefined params from Mongo query
+                ['callback', 'autogroup', 'groupby'].forEach(function (p) {
+                    if (params.hasOwnProperty(p)) {
+                        delete params[p];
+                    }
+                });
 
-                if (obLength(params) > 0) {
+                if (analytics_api.obLength(params) > 0) {
                     for (param_key in params) {
                         if (params.hasOwnProperty(param_key)) {
                             if (params[param_key].trim() !== '') {
@@ -60,15 +53,25 @@ var serviceController = (function () {
                     if (err) {
                         res.send(500, err);
                     } else {
-                        var grouped_data = analytics_api.group(data),
-                            response = JSON.stringify({
-                                name: api.title,
-                                query: merge.object({date: date + " days"}, params),
-                                num_results: obLength(grouped_data),
-                                results: grouped_data
-                            }),
+                        var response,
                             headers,
-                            expiry_time = (60 * 60 * 12); // TODO set this properly - depending on update interval
+                            expiry_time = (60 * 60 * 12), // TODO set this properly - depending on update interval
+                        // Have to stringify and then parse the data as JS can't cope with a Date as an object's property if transforming later on. Sheesh.
+                            grouped_data = JSON.parse(JSON.stringify(data));
+
+                        if (req.query.groupby) {
+                            grouped_data = analytics_api.groupBy(req.query.groupby, grouped_data);
+                        }
+                        if (req.query.autogroup) {
+                            grouped_data = analytics_api.group(grouped_data);
+                        }
+
+                        response = JSON.stringify({
+                            name: api.title,
+                            query: merge.object({date: date + " days"}, params),
+                            num_results: analytics_api.obLength(grouped_data),
+                            results: grouped_data
+                        });
 
                         if (req.query.hasOwnProperty('callback')) {
                             response = 'function ' + req.query.callback + '() { return ' + response + '; }';

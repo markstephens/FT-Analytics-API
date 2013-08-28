@@ -17,12 +17,21 @@ var api = (function () {
     function build_url(type, api, req) {
         var url = 'http://' + req.headers.host + '/' + type + '/' + api._id,
             qs = [],
-            key;
+            key,
+            arr_i;
 
         for (key in req.query) {
             if (req.query.hasOwnProperty(key)) {
-                if (req.query[key].trim() !== '') {
-                    qs.push(key + '=' + req.query[key]);
+                if (req.query[key] instanceof Array) {
+                    for (arr_i = 0; arr_i < req.query[key].length; arr_i++) {
+                        if (req.query[key][arr_i].trim() !== '') {
+                            qs.push(key + '[]=' + req.query[key][arr_i]);
+                        }
+                    }
+                } else {
+                    if (req.query[key].trim() !== '') {
+                        qs.push(key + '=' + req.query[key]);
+                    }
                 }
             }
         }

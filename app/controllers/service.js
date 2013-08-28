@@ -11,6 +11,8 @@ var env = process.env.NODE_ENV || 'development',
 var serviceController = (function () {
     "use strict";
 
+    var internal_params = ['date', 'callback', 'autogroup', 'groupby', 'chart_title'];
+
     function render_api(req, res, memJS, cache_path) {
         API.findById(req.params[0], function (err, api) {
             if (err) {
@@ -19,17 +21,17 @@ var serviceController = (function () {
                 var date = 1,
                     query = {},
                     params = merge.object(req.query), // Take a copy if the object as we're about to remove the date
-                    param_key;
+                    param_key,
+                    groupings = [];
 
                 if (typeof req.query.date !== "undefined") {
                     if (req.query.date.trim() !== '') {
                         date = req.query.date;
                     }
-                    delete params.date;
                 }
 
                 // Remove predefined params from Mongo query
-                ['callback', 'autogroup', 'groupby'].forEach(function (p) {
+                internal_params.forEach(function (p) {
                     if (params.hasOwnProperty(p)) {
                         delete params[p];
                     }
@@ -62,14 +64,22 @@ var serviceController = (function () {
 
                         if (req.query.groupby) {
                             grouped_data = analytics_api.groupBy(req.query.groupby, grouped_data);
+
+                            if (req.query.groupby instanceof Array) {
+                                groupings = groupings.concat(req.query.groupby);
+                            } else {
+                                groupings = groupings.concat([req.query.groupby]);
+                            }
                         }
                         if (req.query.autogroup) {
                             grouped_data = analytics_api.group(grouped_data);
+                            groupings = groupings.concat(['autogroup']);
                         }
 
                         response = JSON.stringify({
                             name: api.title,
-                            query: merge.object({date: date + " days"}, params),
+                            filters: merge.object({date: date + " days"}, params),
+                            grouping: groupings,
                             num_results: analytics_api.obLength(grouped_data),
                             results: grouped_data
                         });
@@ -134,8 +144,12 @@ var serviceController = (function () {
             var api_url = analytics_api.build_url('api', api, req),
                 params = merge.object(req.query);
 
-            delete params.chart_title;
-            delete params.date;
+            // Remove predefined params from Mongo query
+            internal_params.forEach(function (p) {
+                if (params.hasOwnProperty(p)) {
+                    delete params[p];
+                }
+            });
 
             res.render('service/chart', { api_url: api_url, chart_title : req.query.chart_title || '', date : req.query.date || 1, params : params });
         });

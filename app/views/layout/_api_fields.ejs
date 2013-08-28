@@ -1,4 +1,7 @@
 <% if (api.columns.length > 0) { %>
+<div class="col-lg-offset-2">
+    <h3>Filters</h3>
+</div>
 <div class="form-group">
     <label for="date" class="col-lg-2 control-label">Rolling date</label>
     <div class="col-lg-1">
@@ -14,4 +17,10 @@
 <%-form_field((column.values.length > 100 ? 'text' : 'select'), 'builder', column.name, req.query[column.name], { name:column.name, label: column.name, values: column.values, blank: 'All' }) %>
 <% } %>
 <% }); %>
+
+<div class="col-lg-offset-2">
+    <h3>Grouping</h3>
+</div>
+<%-form_field('checkbox', 'builder', 'autogroup', 'true', { name:'autogroup', label: 'Auto group?', checked_value: req.query.autogroup }) %>
+<%-form_field('select', 'builder', 'groupby', req.query.groupby, { name:'groupby[]', label: 'Group By', values: ['Date'].concat(api.columns.filter(function (col) { return col.values.length > 0; }).map(function (col) { return col.name; })), multiple: true }) %>
 <% } %>

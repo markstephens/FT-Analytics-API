@@ -55,7 +55,8 @@ var serviceController = (function () {
                     } else {
                         var response,
                             headers,
-                            expiry_time = (60 * 60 * 12), // TODO set this properly - depending on update interval
+                            expiry_time = api.next_update(),
+
                         // Have to stringify and then parse the data as JS can't cope with a Date as an object's property if transforming later on. Sheesh.
                             grouped_data = JSON.parse(JSON.stringify(data));
 

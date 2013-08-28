@@ -7,7 +7,12 @@ var mongoose = require('mongoose'),
     processor = require("../processor/processor"),
     Schema = mongoose.Schema,
     Mixed = Schema.Types.Mixed,
-    merge = require("../../util/merge");
+    merge = require("../../util/merge"),
+    timings = {
+        'minute' : 60,
+        'hour' : (60 * 60),
+        'day' : (60 * 60 * 24)
+    };
 
 /**
  * Getters
@@ -97,6 +102,11 @@ APISchema.methods = {
 
             console.log('api.js', 'DONE!');
         });
+    },
+    timings : timings,
+    next_update : function () {
+        var update = timings[this.frequency] - ((new Date()).getTime() - this.lastDataUpdate.getTime());
+        return (update < 0 ? 0 : update);
     }
 };
 

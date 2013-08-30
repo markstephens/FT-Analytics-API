@@ -141,17 +141,17 @@ var serviceController = (function () {
 
     function chart(req, res) {
         API.findById(req.params[0], function (err, api) {
-            var api_url = analytics_api.build_url('api', api, req),
-                params = merge.object(req.query);
+            var params = merge.object(req.query),
+                api_url;
 
-            // Remove predefined params from Mongo query
-            internal_params.forEach(function (p) {
-                if (params.hasOwnProperty(p)) {
-                    delete params[p];
-                }
-            });
+            delete req.query.chart_title;
 
-            res.render('service/chart', { api_url: api_url, chart_title : req.query.chart_title || '', date : req.query.date || 1, params : params });
+            // Force a format????????
+            delete req.query.autogroup;
+            delete req.query.groupby;
+
+            api_url = analytics_api.build_url('api', api, req);
+            res.render('service/chart', { api_url: api_url, chart_title : params.chart_title || '', date : req.query.date || 1 });
         });
     }
 

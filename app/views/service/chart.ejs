@@ -1,16 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8">
     <title><%=chart_title %></title>
+    <style>
+        body {
+            font: 0.9em sans-serif;
+        }
+        .title {
+            font-weight: bold;
+            font-size: 2em;
+        }
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: #000;
+            shape-rendering: crispEdges;
+        }
+        .x.axis path {
+            display: none;
+        }
+        .line {
+            fill: none;
+            stroke: steelblue;
+            stroke-width: 1.5px;
+        }
+    </style>
 </head>
 <body>
+<script src="http://d3js.org/d3.v3.js"></script>
+<script>
+    /*global: d3*/
+    var margin = {top: 20, right: 200, bottom: 30, left: 80},
+            width = 960 - margin.left - margin.right,
+            height = 500 - margin.top - margin.bottom,
 
-<p><%=chart_title %></p>
-<p><%=api_url %></p>
-<p><%=req.url %></p>
-<p><%=date %></p>
-<pre><%=inspect(params) %></pre>
+            parseDate = d3.time.format("%Y%m%d").parse,
+            color = d3.scale.category20(),
+
+            x = d3.time.scale()
+                    .range([0, width]),
+            y = d3.scale.linear()
+                    .range([height, 0]),
+            xAxis = d3.svg.axis()
+                    .scale(x).orient("bottom"),
+            yAxis = d3.svg.axis()
+                    .scale(y).orient("left"),
+            line = d3.svg.line()
+                    .interpolate("basis")
+                    .x(function(d) { return x(d.date); })
+                    .y(function(d) { return y(d.value); }),
+
+            svg = d3.select("body").append("svg")
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom)
+                    .append("g")
+                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    d3.json("<%-api_url %>", function(error, data) {
+        console.log(data.results);
+
+        var series = {};
+
+        data.results.forEach(function (d) {
+            var prefix = d3.keys(d.data).filter(function (col) {
+                        return !parseFloat(d.data[col]);
+                    }).map(function (col) {
+                                return d.data[col];
+                            }),
+                    values = d3.keys(d.data).filter(function (col) {
+                        return parseFloat(d.data[col]);
+                    }).map(function (col) {
+                                return {
+                                    name : col,
+                                    value : parseFloat(d.data[col])
+                                }
+                            });
+
+            values.forEach(function (val) {
+                var name = prefix.concat([val.name]).join(' / ');
+
+                if (!series.hasOwnProperty(name)) {
+                    series[name] = [];
+                }
+
+                series[name].push({ date: (new Date(Date.parse(d.date))), value: val.value});
+            });
+
+        });
+
+        //console.log(series);
+        series = d3.map(series).entries();
+        console.log(series);
+
+        color.domain(series.map(function(v) { return v.key; }));
+
+        x.domain([
+            d3.min(series, function(v) { return d3.min(v.value, function (d) { return d.date; }) }),
+            d3.max(series, function(v) { return d3.max(v.value, function (d) { return d.date; }) })
+        ]);
+        //console.log(x.domain());
+
+        y.domain([
+            d3.min(series, function(v) { return d3.min(v.value, function (d) { return d.value; }) }),
+            d3.max(series, function(v) { return d3.max(v.value, function (d) { return d.value; }) })
+        ]);
+        //console.log(y.domain());
+
+        svg.append("text")
+                .attr("class", "title")
+                .attr("transform", "translate(" + width + ", 10)")
+                .text("<%=chart_title %>");
+
+        svg.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(0," + height + ")")
+                .call(xAxis);
+
+        svg.append("g")
+                .attr("class", "y axis")
+                .call(yAxis)
+                .append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("y", 6)
+                .attr("dy", ".71em")
+                .style("text-anchor", "end")
+                .text("Count");
+
+        var plot = svg.selectAll(".plot")
+                .data(series)
+                .enter().append("g")
+                .attr("class", "plot");
+
+        plot.append("path")
+                .attr("class", "line")
+                .attr("d", function(d) { return line(d.value.sort(function (a, b) {return a.date - b.date; })); })
+                .style("stroke", function(d) { return color(d.key); });
+
+        plot.append("text")
+                .datum(function(d) { return {name: d.key, value: d.value[d.value.length - 1]}; })
+                .attr("transform", function(d) { return "translate(" + x(d.value.date) + "," + y(d.value.value) + ")"; })
+                .attr("x", 3)
+                .attr("dy", ".35em")
+                .text(function(d) { return d.name; });
+    });
+
+</script>
 
 </body>
 </html>

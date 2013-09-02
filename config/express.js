@@ -10,8 +10,8 @@ module.exports = function (app, env, config) {
 
     //app.use(express.favicon());
     app.use(express.logger('dev'));
-    app.use(express.compress());
     app.use(express.bodyParser());
+    app.use(express.compress());
     app.use(express.methodOverride());
 
     app.use(express.cookieParser('4n4lyt1cs 4p1'));

@@ -43,14 +43,11 @@
         <p>URL: <a href="<%=api.dataUrl %>" target="_blank"><%=api.dataUrl %></a></p>
         <p>Last updated: <%= (api.lastDataUpdate.getTime() === (new Date(0)).getTime() ? 'never' : api.lastDataUpdate) %></p>
         <p>Number of records: <%=api.num_records %></p>
-        <p>Update frequency: <%=api.frequency %> (Next update: <%=api.next_update() %>)</p>
+        <p>Update frequency: <%=api.frequency %> (Next update: <%=new Date((new Date()).getTime() + api.next_update()) %>)</p>
         <p>
             <a href="?populateData" class="btn btn-warning">Populate with latest data</a>
             <a href="?emptyData" class="btn btn-xs btn-danger">Empty data</a>
         </p>
-
-        <h2>Charts</h2>
-        <p><a class="btn btn-primary" href="<%=req.url%>/charts">Configure charts</a></p>
 
     </div>
 </div>

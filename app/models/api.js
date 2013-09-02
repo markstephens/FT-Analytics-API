@@ -10,6 +10,7 @@ var mongoose = require('mongoose'),
     merge = require("../../util/merge"),
     timings = {
         'minute' : 60,
+        '10 minutes' : (60 * 10),
         'hour' : (60 * 60),
         'day' : (60 * 60 * 24)
     };

@@ -16,7 +16,7 @@
 
         <%-form_field('textarea', 'api', 'description', api.description, {label: 'Description', placeholder: 'Description', help: 'What the API does.'}) %>
 
-        <%-form_field('select', 'api', 'frequency', api.frequency, {values: ['minute', 'hour', 'day'], label: 'Update frequency', required: true, help: 'How often to get the feed.'}) %>
+        <%-form_field('select', 'api', 'frequency', api.frequency, {values: ['minute', '10 minutes', 'hour', 'day'], label: 'Update frequency', required: true, help: 'How often to get the feed.'}) %>
     </div>
     <div class="col-lg-6">
         <div class="form-group">

@@ -15,7 +15,8 @@ var iJentoProcessor = (function () {
     function can_get(url) {
         if (/https:\/\/ft\.ijento\.com\/query\/app/.test(url) && process.env.IJENTO_AUTH) {
             return {
-                auth: process.env.IJENTO_AUTH
+                auth: process.env.IJENTO_AUTH,
+                port: 443
             };
         } else {
             return false;

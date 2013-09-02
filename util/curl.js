@@ -7,7 +7,7 @@ var curl = (function () {
 
     var default_options = {
         method: "GET",
-        port: 443
+        port: 80
     };
 
     function data(uri, options, callback) {

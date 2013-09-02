@@ -1,4 +1,4 @@
-var curl = require("../../../util/curl"),
+var processor = require("../../processor/processor"),
     mongoose = require('mongoose'),
     API = mongoose.model('API');
 
@@ -51,10 +51,8 @@ var adminApisController = (function () {
             });
         } else {
             if (req.xhr) {
-                // TODO Use processor.head
-                curl.data(req.query.url, { auth: process.env.IJENTO_AUTH }, function (response, data) {
-                    res.set('Content-Type', response.headers['content-type']);
-                    return res.send(response.statusCode, data);
+                processor.head(req.query.url, function (result) {
+                    return res.send(result.data);
                 });
             } else {
                 api = new API();

@@ -3,7 +3,6 @@ var curl = require("../../util/curl"),
     env = process.env.NODE_ENV || 'development',
     config = require('../../config/config')[env];
 
-
 var processor = (function () {
 
     var processors_path = config.root + '/app/processor/brand',
@@ -32,9 +31,7 @@ var processor = (function () {
 
     function head(url, callback) {
         getData(url, function (data) {
-            processors.forEach(function (processor) {
-                processor.can_process(data, callback);
-            });
+            callback(data);
         });
     }
 

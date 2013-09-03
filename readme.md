@@ -21,8 +21,9 @@ Running
 - Start Memcache
 - Set environment variables (or add them to the command line when starting the app)
   - [Memcache stuff](https://github.com/alevy/memjs#configuration)
-  - TODO: API keys stuff
-- Start the app `node app`
+- API keys
+  - Each processing module will let you know what environment variables or criteria it needs on startup.
+- Start the app `NODE_ENV=production PORT=5000 ./node_modules/forever/bin/forever start app.js`
 
 Deploying to production
 -----------------------

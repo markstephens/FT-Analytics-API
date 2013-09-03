@@ -21,7 +21,7 @@ var config = (function () {
             db: 'mongodb://localhost/analytics_api_test'
         }),
         production: merge.object(default_config, {
-            db: process.env.MONGOLAB_URI,
+            //db: process.env.MONGOLAB_URI,
             cache: true
         })
     };

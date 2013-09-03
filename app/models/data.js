@@ -11,8 +11,8 @@ var mongoose = require('mongoose'),
  * Data Schema
  */
 var DataSchema = new Schema({
-    _api : {type : Schema.Types.ObjectId, ref : 'API'},
-    date : {type : Date},
+    _api : {type : Schema.Types.ObjectId, ref : 'API', index: true},
+    date : {type : Date, index: true},
     data : {type : Mixed}
 });
 

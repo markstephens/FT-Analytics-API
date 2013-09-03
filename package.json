@@ -20,6 +20,7 @@
         "ejs": "*",
         "flashify" : "0.1.x",
         "memjs" : "0.6.x",
+        "forever" : "0.10.x",
 
         "xml2js" : "0.2.x",
         "jsdom" : "0.8.x"

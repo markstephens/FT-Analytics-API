@@ -90,23 +90,29 @@ APISchema.methods = {
             api = this;
 
         processor.process(api, function (data) { // data should be in the format of { date: Date, data: [{ date: Date, data: {} }] }
-            //console.log('api.js', 'Found ' + data.data.length + ' records.');
-            var i;
+            if (typeof data !== "undefined") {
+                //console.log('api.js', 'Found ' + data.data.length + ' records.');
+                var i;
 
-            for (i = 0; i < data.data.length; i++) {
-                (new Data(merge.object(data.data[i], { _api : api._id }))).save();
-            }
+                for (i = 0; i < data.data.length; i++) {
+                    (new Data(merge.object(data.data[i], { _api : api._id }))).save();
+                }
 
-            api.columns = data.columns;
-            api.lastDataUpdate = data.date;
-            api.num_records += data.data.length;
-            api.save(function () {
-                console.log(api.title, 'DONE!');
+                api.columns = data.columns;
+                api.lastDataUpdate = data.date;
+                api.num_records += data.data.length;
+                api.save(function () {
+                    console.log(api.title, 'DONE!');
 
+                    if (typeof callback !== "undefined") {
+                        callback();
+                    }
+                });
+            } else {
                 if (typeof callback !== "undefined") {
                     callback();
                 }
-            });
+            }
         });
     },
     timings : timings,

@@ -43,6 +43,7 @@ var processor = (function () {
                         processor.process(model.columns, result, callback);
                     } else {
                         console.log('No new data found');
+                        callback();
                     }
                 });
             });

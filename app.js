@@ -16,8 +16,6 @@ var cluster = require('cluster'),
     ok = '\t\033[32m[ OK ]\033[m',
     fail = '\t\033[31m[ FAIL ]\033[m';
 
-// TODO Check http://nodejs.org/api/process.html#process_process_argv for command line args
-
 process.title = 'nodeAapi';
 
 // db connection

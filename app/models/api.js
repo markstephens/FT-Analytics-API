@@ -85,23 +85,28 @@ APISchema.virtual('newcolumn')
  * Before save callback
  */
 APISchema.methods = {
-    populateData : function () {
+    populateData : function (callback) {
         var Data = mongoose.model('Data'),
             api = this;
 
         processor.process(api, function (data) { // data should be in the format of { date: Date, data: [{ date: Date, data: {} }] }
             //console.log('api.js', 'Found ' + data.data.length + ' records.');
+            var i;
 
-            data.data.forEach(function (d) {
-                (new Data(merge.object(d, { _api : api._id }))).save();
-            });
+            for (i = 0; i < data.data.length; i++) {
+                (new Data(merge.object(data.data[i], { _api : api._id }))).save();
+            }
 
             api.columns = data.columns;
             api.lastDataUpdate = data.date;
             api.num_records += data.data.length;
-            api.save();
+            api.save(function () {
+                console.log(api.title, 'DONE!');
 
-            console.log('api.js', 'DONE!');
+                if (typeof callback !== "undefined") {
+                    callback();
+                }
+            });
         });
     },
     timings : timings,

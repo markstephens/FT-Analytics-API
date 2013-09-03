@@ -23,6 +23,8 @@ var processor = (function () {
                             url: url,
                             data: data
                         });
+                    } else {
+                        console.log('Error fetching:', url, response.statusCode);
                     }
                 });
             }

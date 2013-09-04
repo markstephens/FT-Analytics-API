@@ -12,6 +12,20 @@ var config = (function () {
         root: rootPath,
         app: {
             name: 'FT Analytics API'
+        },
+        port: 3000,
+        http_proxy : {
+            host : '',
+            port : ''
+        },
+        https_proxy : {
+            host : '',
+            port : ''
+        },
+        processors : {
+            ijento : {
+                auth : process.env.IJENTO_AUTH
+            }
         }
     };
 
@@ -21,8 +35,8 @@ var config = (function () {
             db: 'mongodb://localhost/analytics_api_test'
         }),
         production: merge.object(default_config, {
-            //db: process.env.MONGOLAB_URI,
-            cache: true
+            cache: true,
+            port: 5000
         })
     };
 }());

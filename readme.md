@@ -14,6 +14,7 @@ Installation
 - Install Mongo, Memcache and Node.js
 - Clone this repo `git clone ...`
 - run `npm install`
+- Copy ./config/config.sample.js to ./config/config.js and edit to suit your setup
 
 Running
 -------

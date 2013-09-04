@@ -1,21 +1,23 @@
-var parseString = require('xml2js').parseString;
+var env = process.env.NODE_ENV || 'development',
+    config = require('../../../config/config')[env],
+    parseString = require('xml2js').parseString;
 
 var iJentoProcessor = (function () {
 
     var columns = [];
 
     function startup_requirements(util) {
-        if (process.env.IJENTO_AUTH) {
+        if (config.processors.ijento.auth) {
             util.puts(' - iJento\t\033[32m[ OK ]\033[m');
         } else {
-            util.puts(' - iJento: IJENTO_AUTH environment variable missing - you won\'t be able to fetch new data\t\033[32m[ OK ]\033[m');
+            util.puts(' - iJento: auth config missing - you won\'t be able to fetch new data. (Set in config)\t\033[32m[ OK ]\033[m');
         }
     }
 
     function can_get(url) {
-        if (/https:\/\/ft\.ijento\.com\/query\/app/.test(url) && process.env.IJENTO_AUTH) {
+        if (/https:\/\/ft\.ijento\.com\/query\/app/.test(url) && config.processors.ijento.auth) {
             return {
-                auth: process.env.IJENTO_AUTH,
+                auth: config.processors.ijento.auth,
                 port: 443
             };
         } else {

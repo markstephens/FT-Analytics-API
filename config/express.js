@@ -4,7 +4,7 @@ var express = require('express'),
 module.exports = function (app, env, config) {
 
     app.set('title', config.app.name);
-    app.set('port', process.env.PORT || 3000);
+    app.set('port', config.port || 3000);
     app.set('views', config.root + '/app/views');
     app.set('view engine', 'ejs');
 

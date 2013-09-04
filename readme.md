@@ -29,4 +29,20 @@ Running
 Deploying to production
 -----------------------
 - [This looks a good start ](http://blog.argteam.com/coding/hardening-node-js-for-production-part-2-using-nginx-to-avoid-node-js-load/)
-- Use forever `NODE_ENV=production PORT=5000 ./node_modules/forever/bin/forever start app.js`
+- Use forever `NODE_ENV=production ./node_modules/forever/bin/forever start -o access.log -e error.log app.js`
+
+Cron jobs
+---------
+```
+# minute (0-59),
+# |      hour (0-23),
+# |      |       day of the month (1-31),
+# |      |       |       month of the year (1-12),
+# |      |       |       |       day of the week (0-6 with 0=Sunday).
+# |      |       |       |       |       commands
+
+ *	*	*	*	*	NODE_ENV=production node ~/FT-Analytics-API/cron.js "minute" >& ~/FT-Analytics-API/cron.log
+ */10	*	*	*	*	NODE_ENV=production node ~/FT-Analytics-API/cron.js "10 minutes" >& ~/FT-Analytics-API/cron.log
+ 1	*	*	*	*	NODE_ENV=production node ~/FT-Analytics-API/cron.js "hour" >& ~/FT-Analytics-API/cron.log
+ 2	8	*	*	*	NODE_ENV=production node ~/FT-Analytics-API/cron.js "day" >& ~/FT-Analytics-API/cron.log
+```

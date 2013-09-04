@@ -35,7 +35,7 @@ var curl = (function () {
             }
         }
 
-        console.log('CURL opts', opts);
+        //console.log('CURL opts', opts);
 
         req = method.request(opts, function (res) {
             res.setEncoding('utf8');

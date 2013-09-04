@@ -17,7 +17,7 @@ API.find({ frequency: frequency }, function (err, apis) {
         process.exit(1);
     } else {
         if (apis.length === 0) {
-            util.puts(' - no apis found');
+            util.puts('No apis found');
             mongoose.disconnect();
             process.exit(0);
         }

@@ -98,7 +98,7 @@ var serviceController = (function () {
 
                         // Save in cache for next time
                         if (config.cache) {
-                            memJS.set(cache_path, JSON.stringify({ headers : headers, response: response }), function () {}, expiry_time);
+                            memJS.set(cache_path, JSON.stringify({ headers : headers, response: response }), function () {}, Math.floor(expiry_time / 1000));
                         }
 
                         res.set(headers);

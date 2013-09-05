@@ -48,7 +48,7 @@ var serviceController = (function () {
                         }
                     }
 
-                    console.log('QUERY: ', merge.object(query, { _api : api._id }));
+                    //console.log('QUERY: ', merge.object(query, { _api : api._id }));
                 }
 
                 Data.filterByRelativeDate(date).find(merge.object(query, { _api : api._id })).select("-_id -_api -__v").exec(function (err, data) {
@@ -92,8 +92,8 @@ var serviceController = (function () {
                         headers = {
                             'Content-Length': response.length,
                             'ETag': crypto.createHash('md5').update(response, 'utf8').digest('hex'),
-                            'Expires': (new Date((new Date()).getTime() + (1000 * expiry_time))).toUTCString(),
-                            'Cache-Control': 'max-age=' + expiry_time
+                            'Expires': (new Date((new Date()).getTime() + expiry_time)).toUTCString(),
+                            'Cache-Control': 'max-age=' + Math.floor(expiry_time / 1000)
                         };
 
                         // Save in cache for next time

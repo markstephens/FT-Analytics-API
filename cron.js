@@ -20,7 +20,7 @@ mongoose.connect(config.db);
 /*
  * Print out startup information and requirements
  */
-util.puts('\033[36m' + (new Date()) + ' - ' + process.argv[2] + '\033[m');
+util.puts((new Date()) + ' - ' + process.argv[2]);
 
 if (mongoose.CONNREFUSED) {
     util.error('MongoDB server not found.' + fail);

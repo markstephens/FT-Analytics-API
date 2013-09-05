@@ -12,6 +12,9 @@ var mongoose = require('mongoose'),
         'minute' : 60,
         '10 minutes' : (60 * 10),
         'hour' : (60 * 60),
+        '2 hours' : (60 * 60 * 2),
+        '6 hours' : (60 * 60 * 6),
+        '12 hours' : (60 * 60 * 12),
         'day' : (60 * 60 * 24)
     };
 
@@ -117,7 +120,7 @@ APISchema.methods = {
     },
     timings : timings,
     next_update : function () {
-        var update = timings[this.frequency] - ((new Date()).getTime() - this.lastDataUpdate.getTime());
+        var update = (timings[this.frequency] * 1000) - ((new Date()).getTime() - this.lastDataUpdate.getTime());
         return (update < 0 ? 0 : update);
     }
 };

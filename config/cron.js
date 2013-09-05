@@ -2,7 +2,7 @@ var util = require('util'),
     frequency = process.argv[2],
     mongoose = require('mongoose'),
     API = mongoose.model('API'),
-    valid_frequencies = ['minute', '10 minutes', 'hour', 'day'],
+    valid_frequencies = ['minute', '10 minutes', 'hour', '2 hours', '6 hours', '12 hours', 'day'],
     finished_apis = 0;
 
 if (valid_frequencies.indexOf(frequency) === -1) {
@@ -17,7 +17,7 @@ API.find({ frequency: frequency }, function (err, apis) {
         process.exit(1);
     } else {
         if (apis.length === 0) {
-            util.puts('No apis found');
+            //util.puts('No apis found');
             mongoose.disconnect();
             process.exit(0);
         }

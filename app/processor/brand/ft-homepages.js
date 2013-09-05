@@ -33,8 +33,7 @@ var FTHomepagesProcessor = (function () {
                 src: [jquery],
                 done: function (errors, window) {
                     console.log('FT HomePages - jsdom done');
-                    var last_update = new Date((new Date()).getTime() + (1000 * 60 * 10)); // Set 10 minutes to stop updating every minute
-                    callback({date: last_update, results: window });
+                    callback({date: (new Date()), results: window });
                 }
             });
         }

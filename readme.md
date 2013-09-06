@@ -30,6 +30,7 @@ Deploying to production
 -----------------------
 - [This looks a good start ](http://blog.argteam.com/coding/hardening-node-js-for-production-part-2-using-nginx-to-avoid-node-js-load/)
 - Use forever `NODE_ENV=production ./node_modules/forever/bin/forever start -o access.log -e error.log app.js`
+- Flush memcache `echo 'flush_all' | nc localhost 11211`
 
 Cron jobs
 ---------

@@ -25,7 +25,7 @@ var routes = function (app) {
     crudRoutes(adminApisController);
 
     // Processors
-    app.get((new RegExp('/' + adminProcessorsController.path + '/([\\w\\.]+)')), adminProcessorsController.show);
+    app.get((new RegExp('/' + adminProcessorsController.path + '/([\\w\\-\\.]+)')), adminProcessorsController.show);
     app.get((new RegExp('/' + adminProcessorsController.path)), adminProcessorsController.index);
 
     /*

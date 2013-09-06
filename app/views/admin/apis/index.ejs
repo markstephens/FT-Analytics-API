@@ -4,7 +4,7 @@
     <h1>APIs</h1>
 </div>
 
-<p><a href="<%=req.url %>/new" class="btn btn-primary">New API</a></p>
+<p><a href="<%=relative_url('new') %>" class="btn btn-primary">New API</a></p>
 
 <% if (apis.length > 0) { %>
 <% apis.forEach(function (api) { %>
@@ -14,7 +14,7 @@
 </div>
 <% }) %>
 
-<p><a href="<%=req.url %>/new" class="btn btn-primary">New API</a></p>
+<p><a href="<%=relative_url('new') %>" class="btn btn-primary">New API</a></p>
 <% } else { %>
 <div class="alert alert-info">No API&rsquo;s found.</div>
 <% } %>

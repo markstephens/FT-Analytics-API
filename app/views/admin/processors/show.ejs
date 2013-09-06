@@ -4,12 +4,18 @@
     <h1><%=processor.title %></h1>
 </div>
 
-<p><a href="./" class="btn btn-default">Back</a></p>
+<p><%-back_link() %></p>
 
+<h2>CURL conditions</h2>
 <pre>
-    <%=processor.conditions %>
+    <%=processor.conditions.can_get %>
 </pre>
 
-<p><a href="./" class="btn btn-default">Back</a></p>
+<h2>Data conditions</h2>
+<pre>
+    <%=processor.conditions.can_process %>
+</pre>
+
+<p><%-back_link() %></p>
 
 <% include ../../layout/footer %>

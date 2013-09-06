@@ -4,7 +4,7 @@
     <h1><%=api.title %></h1>
 </div>
 
-<p><a href="./" class="btn btn-default">Back</a></p>
+<p><%-back_link() %></p>
 
 <div class="panel">
     <div class="pull-right"><a href="<%=req.url %>/edit" class="btn btn-primary btn-sm">Edit</a></div>
@@ -52,6 +52,6 @@
     </div>
 </div>
 
-<p><a href="./" class="btn btn-default">Back</a></p>
+<p><%-back_link() %></p>
 
 <% include ../../layout/footer %>

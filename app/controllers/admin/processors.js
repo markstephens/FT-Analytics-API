@@ -25,7 +25,10 @@ var adminProcessorsController = (function () {
         if (index > -1) {
             processor = {
                 title: processors[index],
-                conditions: require(pathModule.normalize(__dirname + '../../../processor/brand/' + processors[index])).can_process.toString()
+                conditions: {
+                    can_get: require(pathModule.normalize(__dirname + '../../../processor/brand/' + processors[index])).can_get.toString(),
+                    can_process: require(pathModule.normalize(__dirname + '../../../processor/brand/' + processors[index])).can_process.toString()
+                }
             };
             return res.render(view_path + '/show', { title: processor.title, processor: processor });
         } else {

@@ -7,7 +7,10 @@ var homeController = (function () {
 
     function index(req, res) {
         API.find(function (err, apis) {
-            res.render('home/index', { title: 'Home', apis: apis });
+            var total_records = 0;
+            apis.forEach(function (api) { total_records += api.num_records; });
+
+            res.render('home/index', { title: 'Home', apis: apis, total_records: total_records });
         });
     }
 

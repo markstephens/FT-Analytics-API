@@ -3,6 +3,7 @@
 <div class="jumbotron">
     <h1>FT Analytics API</h1>
     <p>An API for Analytics data!</p>
+    <p><small><%=total_records %> records and counting...</small></p>
 </div>
 
 <% if (apis.length > 0) { %>
@@ -15,9 +16,12 @@
             <div class="panel-heading"><h2><%=api.title %></h2></div>
             <%-format(api.description) %>
             <div class="panel-footer">
-                <%-link_to('chart_builder', api, 'Build my chart', { 'class':'btn btn-xs btn-primary' }) %>
-                <%-link_to('api_builder', api, 'Build my feed', { 'class':'btn btn-xs btn-success' }) %>
-                <%-link_to('api', api, 'Just give me JSON!', { 'class':'btn btn-xs btn-warning pull-right', 'target':'_blank' }) %>
+                <p>
+                    <%-link_to('chart_builder', api, 'Build my chart', { 'class':'btn btn-xs btn-primary' }) %>
+                    <%-link_to('api_builder', api, 'Build my feed', { 'class':'btn btn-xs btn-success' }) %>
+                    <%-link_to('api', api, 'Just give me JSON!', { 'class':'btn btn-xs btn-warning pull-right', 'target':'_blank' }) %>
+                </p>
+                <div><small class="text-muted">Last updated: <%=api.lastDataUpdate %>. <span class="pull-right"><%=api.num_records %> records.</span></small></div>
             </div>
         </div>
     </div>

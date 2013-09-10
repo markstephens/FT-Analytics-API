@@ -14,14 +14,16 @@
     <div class="col-lg-6">
         <div class="panel panel-info">
             <div class="panel-heading"><h2><%=api.title %></h2></div>
-            <%-format(api.description) %>
+            <div class="panel-body">
+                <%-format(api.description) %>
+            </div>
+            <div class="panel-body">
+                <small class="text-muted">Last updated: <%=api.lastDataUpdate %>. <span class="pull-right"><%=api.num_records %> records.</span></small>
+            </div>
             <div class="panel-footer">
-                <p>
-                    <%-link_to('chart_builder', api, 'Build my chart', { 'class':'btn btn-xs btn-primary' }) %>
-                    <%-link_to('api_builder', api, 'Build my feed', { 'class':'btn btn-xs btn-success' }) %>
-                    <%-link_to('api', api, 'Just give me JSON!', { 'class':'btn btn-xs btn-warning pull-right', 'target':'_blank' }) %>
-                </p>
-                <div><small class="text-muted">Last updated: <%=api.lastDataUpdate %>. <span class="pull-right"><%=api.num_records %> records.</span></small></div>
+                <%-link_to('chart_builder', api, 'Build my chart', { 'class':'btn btn-xs btn-primary' }) %>
+                <%-link_to('api_builder', api, 'Build my feed', { 'class':'btn btn-xs btn-success' }) %>
+                <%-link_to('api', api, 'Just give me JSON!', { 'class':'btn btn-xs btn-warning pull-right', 'target':'_blank' }) %>
             </div>
         </div>
     </div>

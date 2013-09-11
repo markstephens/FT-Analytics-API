@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * Module dependencies.
  */
@@ -8,9 +10,7 @@ var util = require('util'),
     config = require('./config/config')[env],
     mongoose = require('mongoose'),
     models_path = config.root + '/app/models',
-    processors_path = config.root + '/app/processor/brand',
-    ok = '\t\033[32m[ OK ]\033[m',
-    fail = '\t\033[31m[ FAIL ]\033[m';
+    fail = '\t[ FAIL ]';
 
 process.title = 'cronAapi';
 

@@ -1,3 +1,5 @@
+"use strict";
+
 var merge = require('./merge');
 
 // Helper/Util functions specific to Analytics API

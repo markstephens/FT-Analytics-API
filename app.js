@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * Module dependencies.
  */
@@ -13,8 +15,8 @@ var cluster = require('cluster'),
     models_path = config.root + '/app/models',
     processors_path = config.root + '/app/processor/brand',
     i,
-    ok = '\t\033[32m[ OK ]\033[m',
-    fail = '\t\033[31m[ FAIL ]\033[m';
+    ok = '\t[ OK ]',
+    fail = '\t[ FAIL ]';
 
 process.title = 'nodeAapi';
 
@@ -25,7 +27,7 @@ mongoose.connect(config.db);
  * Print out startup information and requirements
  */
 if (cluster.isMaster) {
-    util.puts('\n=====================================================\n \033[36mAnalytics API\033[m\n=====================================================\n');
+    util.puts('\n=====================================================\n Analytics API\n=====================================================\n');
 
     if (mongoose.CONNREFUSED) {
         util.error('MongoDB server not found.' + fail);
@@ -80,8 +82,8 @@ if (cluster.isMaster) {
         cluster.fork();
     }
 
-    cluster.on('exit', function (worker, code, signal) {
-        util.error('\033[31mWorker ' + worker.process.pid + ' died\033[m');
+    cluster.on('exit', function (worker) {
+        util.error('Worker ' + worker.process.pid + ' died.');
         cluster.fork();
     });
 } else {

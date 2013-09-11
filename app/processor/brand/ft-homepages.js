@@ -1,13 +1,14 @@
+"use strict";
+
 var jsdom = require("jsdom"),
     fs = require("fs"),
     path = require('path'),
-    util = require('util'),
     jquery = fs.readFileSync(path.normalize(__dirname + "../../../../public/js/vendor/jquery-1.10.1.min.js"), "utf-8");
 
 var FTHomepagesProcessor = (function () {
 
     function startup_requirements(util) {
-        util.puts(' - FT Homepages\t\033[32m[ OK ]\033[m');
+        util.puts(' - FT Homepages\t[ OK ]');
     }
 
     function can_get(url) {

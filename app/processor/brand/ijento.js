@@ -1,3 +1,5 @@
+"use strict";
+
 var env = process.env.NODE_ENV || 'development',
     config = require('../../../config/config')[env],
     parseString = require('xml2js').parseString;
@@ -8,9 +10,9 @@ var iJentoProcessor = (function () {
 
     function startup_requirements(util) {
         if (config.processors.ijento.auth) {
-            util.puts(' - iJento\t\033[32m[ OK ]\033[m');
+            util.puts(' - iJento\t[ OK ]');
         } else {
-            util.puts(' - iJento: auth config missing - you won\'t be able to fetch new data. (Set in config)\t\033[32m[ OK ]\033[m');
+            util.puts(' - iJento: auth config missing - you won\'t be able to fetch new data. (Set in config)\t[ OK ]');
         }
     }
 

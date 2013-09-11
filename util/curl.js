@@ -1,3 +1,5 @@
+"use strict";
+
 var env = process.env.NODE_ENV || 'development',
     config = require('../config/config')[env],
     merge = require("./merge"),

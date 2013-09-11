@@ -1,3 +1,5 @@
+"use strict";
+
 var homeController = require('../app/controllers/home'),
     serviceController = require('../app/controllers/service'),
     // Admin

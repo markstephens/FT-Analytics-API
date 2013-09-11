@@ -1,8 +1,8 @@
 {
     "name": "ft-analytics-api",
     "version": "0.0.1",
-    "author" : "Mark Stephens",
-    "description" : "An internal API from our Analytics data.",
+    "author": "Mark Stephens",
+    "description": "An internal API from our Analytics data.",
     "private": true,
 
     "scripts": {
@@ -15,20 +15,25 @@
     },
 
     "dependencies": {
-        "mongoose" : "3.6.x",
+        "mongoose": "3.6.x",
         "express": "3.3.x",
         "ejs": "*",
-        "flashify" : "0.1.x",
-        "memjs" : "0.6.x",
-        "forever" : "0.10.x",
-
-        "xml2js" : "0.2.x",
-        "jsdom" : "0.8.x"
+        "flashify": "0.1.x",
+        "memjs": "0.6.x",
+        "forever": "0.10.x",
+        "xml2js": "0.2.x",
+        "jsdom": "0.8.x"
     },
 
     "engines": {
         "node": "0.10.x",
         "npm": "1.2.x"
+    },
+
+    "devDependencies": {
+        "grunt": "0.4.x",
+        "grunt-contrib-jshint": "0.6.x",
+        "grunt-shell": "0.3.x"
     }
 
 }

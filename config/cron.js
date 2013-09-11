@@ -1,3 +1,5 @@
+"use strict";
+
 var util = require('util'),
     frequency = process.argv[2],
     mongoose = require('mongoose'),

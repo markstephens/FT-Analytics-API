@@ -1,3 +1,5 @@
+"use strict";
+
 function Object(target, options) {
     if (!options) {
         options = target;
@@ -6,6 +8,7 @@ function Object(target, options) {
 
     var name, src, copy;
 
+    /*jshint forin:false */
     for (name in options) {
         src = target[name];
         copy = options[name];

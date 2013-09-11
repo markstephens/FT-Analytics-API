@@ -1,3 +1,5 @@
+"use strict";
+
 var curl = require("../../util/curl"),
     fs = require('fs'),
     env = process.env.NODE_ENV || 'development',

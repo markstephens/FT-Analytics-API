@@ -1,3 +1,5 @@
+"use strict";
+
 var merge = require('../../util/merge');
 
 function formHelpers(req, res, next) {

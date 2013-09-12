@@ -19,7 +19,7 @@
         "express": "3.3.x",
         "ejs": "*",
         "flashify": "0.1.x",
-        "memjs": "0.6.x",
+        "memcached": "0.2.x",
         "forever": "0.10.x",
         "xml2js": "0.2.x",
         "jsdom": "0.8.x"

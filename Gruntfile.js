@@ -37,6 +37,9 @@ module.exports = function (grunt) {
         shell : {
             logs : {
                 command: 'rm *.log'
+            },
+            flush_cache : {
+                command: "echo 'flush_all' | nc localhost 11211"
             }
 
         }
@@ -47,6 +50,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('test', "Run tests.", ['jshint']);
     grunt.registerTask('logs', "Cycle the log files", ['shell:logs']);
+    grunt.registerTask('flush_cache', "Clear local memcache", ['shell:flush_cache']);
 
 
     grunt.loadNpmTasks('grunt-contrib-jshint');

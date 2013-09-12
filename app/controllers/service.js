@@ -5,7 +5,7 @@ var env = process.env.NODE_ENV || 'development',
     API = mongoose.model('API'),
     Data = mongoose.model('Data'),
     merge = require("../../util/merge"),
-    MemJS = require("memjs").Client,
+    Memcached = require('memcached'),
     analytics_api = require("../../util/analytics_api");
 
 var serviceController = (function () {
@@ -13,7 +13,7 @@ var serviceController = (function () {
 
     var internal_params = ['date', 'callback', 'autogroup', 'groupby', 'chart_title'];
 
-    function render_api(req, res, memJS, cache_path) {
+    function render_api(req, res, memcached, cache_path) {
         API.findById(req.params[0], function (err, api) {
             if (err) {
                 res.send(404, err);
@@ -98,7 +98,7 @@ var serviceController = (function () {
 
                         // Save in cache for next time
                         if (config.cache) {
-                            memJS.set(cache_path, JSON.stringify({ headers : headers, response: response }), function () {}, Math.floor(expiry_time / 1000));
+                            memcached.set(cache_path, JSON.stringify({ headers : headers, response: response }), Math.floor(expiry_time / 1000), function (error) { if (error) { console.log(error); } });
                         }
 
                         res.set(headers);
@@ -119,10 +119,10 @@ var serviceController = (function () {
         });
 
         if (config.cache) {
-            var memJS = MemJS.create(),
+            var memcached = new Memcached(config.cache_server),
                 cache_path = crypto.createHash('md5').update(req.url).digest('hex');
 
-            memJS.get(cache_path, function (err, value) {
+            memcached.get(cache_path, function (err, value) {
                 if (value) {
                     value = JSON.parse(value.toString());
 
@@ -131,7 +131,7 @@ var serviceController = (function () {
                     res.set({ 'From-Cache' : 'true' }); // So we can tell what's going on
                     res.send(value.response);
                 } else {
-                    render_api(req, res, memJS, cache_path);
+                    render_api(req, res, memcached, cache_path);
                 }
             });
         } else {

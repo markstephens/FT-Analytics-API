@@ -9,6 +9,7 @@ var config = (function () {
     var default_config = {
         db: 'mongodb://localhost/analytics_api',
         cache: false,
+        cache_server: "localhost:11211",
         root: rootPath,
         app: {
             name: 'FT Analytics API'

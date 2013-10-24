@@ -95,7 +95,6 @@ APISchema.methods = {
 
         processor.process(api, function (data) { // data should be in the format of { date: Date, data: [{ date: Date, data: {} }] }
             if (typeof data !== "undefined") {
-                //console.log('api.js', 'Found ' + data.data.length + ' records.');
                 var i;
 
                 for (i = 0; i < data.data.length; i++) {
@@ -123,6 +122,16 @@ APISchema.methods = {
     next_update : function () {
         var update = (timings[this.frequency] * 1000) - ((new Date()).getTime() - this.lastDataUpdate.getTime());
         return (update < 0 ? 0 : update);
+    },
+    redo_count_cache : function (callback) {
+        var Data = mongoose.model('Data'),
+            api = this;
+
+        Data.count({ _api : api._id }, function (err, count) {
+            api.num_records = count;
+            api.save(callback);
+        });
+
     }
 };
 

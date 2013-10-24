@@ -37,4 +37,29 @@ DataSchema.statics.filterByRelativeDate = function (date) {
     });
 };
 
+DataSchema.statics.clearDataOlderThan = function (date, callback) {
+    if (typeof callback === "undefined") {
+        callback = function () {};
+    }
+
+    if (typeof date === "string") {
+        date = Math.abs(parseInt(date, 10));
+    }
+
+    if (!date) {
+        date = 60; // 2 months-ish
+    }
+
+    var today = new Date();
+    today.setHours(0);
+
+    this.remove({ 'date': { '$lt' : (new Date(today.getTime() - (1000 * 60 * 60 * 24 * date))) } }, function (err, res) {
+        if (err) {
+            console.error(err);
+        }
+
+        callback(res);
+    });
+};
+
 mongoose.model('Data', DataSchema);

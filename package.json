@@ -1,39 +1,36 @@
 {
-    "name": "ft-analytics-api",
-    "version": "0.0.1",
-    "author": "Mark Stephens",
-    "description": "An internal API from our Analytics data.",
-    "private": true,
-
-    "scripts": {
-        "start": "node app.js"
-    },
-
-    "repository": {
-        "type": "git",
-        "url": ""
-    },
-
-    "dependencies": {
-        "mongoose": "3.6.x",
-        "express": "3.3.x",
-        "ejs": "*",
-        "flashify": "0.1.x",
-        "memcached": "0.2.x",
-        "forever": "0.10.x",
-        "xml2js": "0.2.x",
-        "jsdom": "0.8.x"
-    },
-
-    "engines": {
-        "node": "0.10.x",
-        "npm": "1.2.x"
-    },
-
-    "devDependencies": {
-        "grunt": "0.4.x",
-        "grunt-contrib-jshint": "0.6.x",
-        "grunt-shell": "0.3.x"
-    }
-
+  "name": "ft-analytics-api",
+  "version": "0.0.1",
+  "author": "Mark Stephens",
+  "description": "An internal API from our Analytics data.",
+  "private": true,
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markstephens/FT-Analytics-API.git"
+  },
+  "dependencies": {
+    "mongoose": "3.6.x",
+    "express": "3.3.x",
+    "ejs": "*",
+    "flashify": "0.1.x",
+    "memcached": "0.2.x",
+    "forever": "0.10.x",
+    "xml2js": "0.2.x",
+    "jsdom": "0.8.x",
+    "colors": "~0.6.2"
+  },
+  "devDependencies": {
+    "grunt": "0.4.x",
+    "grunt-contrib-jshint": "0.6.x",
+    "grunt-shell": "0.3.x"
+  },
+  "keywords": [
+    "ft",
+    "analytics"
+  ],
+  "license": "BSD-2-Clause"
 }

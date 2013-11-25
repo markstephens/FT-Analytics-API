@@ -28,9 +28,26 @@ Running
 
 Deploying to production
 -----------------------
-- [This looks a good start ](http://blog.argteam.com/coding/hardening-node-js-for-production-part-2-using-nginx-to-avoid-node-js-load/)
-- Use forever `NODE_ENV=production ./node_modules/forever/bin/forever start -o access.log -e error.log app.js`
-- Flush memcache `echo 'flush_all' | nc localhost 11211`
+- Edit `/etc/yum.conf` and add `proxy=http://proxy.osb.ft.com:8080` to the `[main]` section
+<pre>
+export http_proxy=proxy.osb.ft.com:8080
+export https_proxy=proxy.osb.ft.com:8070
+sudo yum install memcached.x86_64 nodejs npm.noarch nginx.x86_64 git postgresql.x86_64 postgresql-devel.x86_64 make ruby rubygems.noarch mongodb-server.x86_64 mongoose-devel.x86_64 mongodb.x86_64
+sudo chkconfig memcached on
+sudo chkconfig mongod on
+sudo chkconfig nginx on
+sudo service mongod start; sudo service nginx start; sudo service memcached start
+npm config set proxy http://proxy.osb.ft.com:8080
+npm config set https-proxy http://proxy.osb.ft.com:8070
+sudo npm config -g set proxy http://proxy.osb.ft.com:8080
+sudo npm config -g set https-proxy http://proxy.osb.ft.com:8070
+npm install
+</pre>
+
+Running in production
+---------------------
+- Use forever `NODE_ENV=production ./node_modules/forever/bin/forever start -o access.log -e error.log .`
+- Flush memcache echo 'flush_all' | nc localhost 11211
 
 Cron jobs
 ---------
@@ -49,4 +66,6 @@ Cron jobs
  2	*/6	*	*	*	NODE_ENV=production node ~/FT-Analytics-API/cron.js "6 hours" >> ~/FT-Analytics-API/cron.log
  2	*/12	*	*	*	NODE_ENV=production node ~/FT-Analytics-API/cron.js "12 hours" >> ~/FT-Analytics-API/cron.log
  4	8	*	*	*	NODE_ENV=production node ~/FT-Analytics-API/cron.js "day" >> ~/FT-Analytics-API/cron.log
+
+ 37	1	*	*	*	NODE_ENV=production node ~/FT-Analytics-API/clear_old_data.js 60 >> ~/FT-Analytics-API/cron.log
 ```

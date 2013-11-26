@@ -19,8 +19,7 @@ var iJentoProcessor = (function () {
     function can_get(url) {
         if (/https:\/\/ft\.ijento\.com\/query\/app/.test(url) && config.processors.ijento.auth) {
             return {
-                auth: config.processors.ijento.auth,
-                port: 443
+                auth: config.processors.ijento.auth
             };
         } else {
             return false;

@@ -25,7 +25,10 @@ var config = (function () {
         },
         processors : {
             ijento : {
-                auth : process.env.IJENTO_AUTH
+                auth : {
+                    'user': process.env.IJENTO_USER,
+                    'pass': process.env.IJENTO_PASS
+                }
             }
         }
     };

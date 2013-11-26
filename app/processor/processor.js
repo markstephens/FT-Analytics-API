@@ -19,28 +19,35 @@ var processor = (function () {
     function getData(url, callback) {
         processors.forEach(function (processor) {
             if (processor.can_get(url)) {
-                curl.data(url, processor.can_get(url), function (response, data) {
+                curl.data(url, processor.can_get(url), function (err, response, data) {
+                    if (err) {
+                        return callback(err);
+                    }
+
                     if (response.statusCode === 200) {
-                        callback({
+                        return callback(null, {
                             url: url,
                             data: data
                         });
-                    } else {
-                        console.log('Error fetching:', url, response.statusCode);
                     }
+
+                    console.log('Error fetching:', url, response.statusCode);
+                    return callback(response);
                 });
             }
         });
     }
 
     function head(url, callback) {
-        getData(url, function (data) {
-            callback(data);
-        });
+        getData(url, callback);
     }
 
     function process(model, callback) {
-        getData(model.dataUrl, function (data) {
+        getData(model.dataUrl, function (error, data) {
+            if (error) {
+                return callback();
+            }
+
             processors.forEach(function (processor) {
                 processor.can_process(data, function (result) {
                     if (result.date > model.lastDataUpdate) {

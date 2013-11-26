@@ -32,7 +32,7 @@ Deploying to production
 <pre>
 export http_proxy=proxy.osb.ft.com:8080
 export https_proxy=proxy.osb.ft.com:8070
-sudo yum install memcached.x86_64 nodejs npm.noarch nginx.x86_64 git postgresql.x86_64 postgresql-devel.x86_64 make ruby rubygems.noarch mongodb-server.x86_64 mongoose-devel.x86_64 mongodb.x86_64
+sudo yum install memcached.x86_64 nodejs npm.noarch nginx.x86_64 git make ruby rubygems.noarch mongodb-server.x86_64 mongoose-devel.x86_64 mongodb.x86_64
 sudo chkconfig memcached on
 sudo chkconfig mongod on
 sudo chkconfig nginx on

@@ -1,12 +1,8 @@
 "use strict";
 
-/**
- * Module dependencies.
- */
-
 var util = require('util'),
     env = process.env.NODE_ENV || 'development',
-    config = require('./config/config')[env],
+    config = require('../config/config')[env],
     mongoose = require('mongoose'),
     models_path = config.root + '/app/models',
     fail = '\t[ FAIL ]',

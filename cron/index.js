@@ -1,13 +1,9 @@
 "use strict";
 
-/**
- * Module dependencies.
- */
-
 var util = require('util'),
     fs = require('fs'),
     env = process.env.NODE_ENV || 'development',
-    config = require('./config/config')[env],
+    config = require('../config/config')[env],
     mongoose = require('mongoose'),
     models_path = config.root + '/app/models',
     fail = '\t[ FAIL ]';
@@ -34,4 +30,4 @@ fs.readdirSync(models_path).forEach(function (file) {
     }
 });
 
-require('./config/cron');
+require('./update');

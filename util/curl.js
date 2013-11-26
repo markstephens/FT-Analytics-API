@@ -20,7 +20,7 @@ var curl = (function () {
             opts.auth.sendImmediately = false;
         }
 
-        console.log('CURL opts', opts);
+        //console.log('CURL opts', opts);
 
         request(uri, opts, callback);
     }

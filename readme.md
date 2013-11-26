@@ -59,13 +59,13 @@ Cron jobs
 # |      |       |       |       day of the week (0-6 with 0=Sunday).
 # |      |       |       |       |       commands
 
- *	*	*	*	*	NODE_ENV=production node ~/FT-Analytics-API/cron.js "minute" >> ~/FT-Analytics-API/cron.log
- */10	*	*	*	*	NODE_ENV=production node ~/FT-Analytics-API/cron.js "10 minutes" >> ~/FT-Analytics-API/cron.log
- 1	*	*	*	*	NODE_ENV=production node ~/FT-Analytics-API/cron.js "hour" >> ~/FT-Analytics-API/cron.log
- 2	*/2	*	*	*	NODE_ENV=production node ~/FT-Analytics-API/cron.js "2 hours" >> ~/FT-Analytics-API/cron.log
- 2	*/6	*	*	*	NODE_ENV=production node ~/FT-Analytics-API/cron.js "6 hours" >> ~/FT-Analytics-API/cron.log
- 2	*/12	*	*	*	NODE_ENV=production node ~/FT-Analytics-API/cron.js "12 hours" >> ~/FT-Analytics-API/cron.log
- 4	8	*	*	*	NODE_ENV=production node ~/FT-Analytics-API/cron.js "day" >> ~/FT-Analytics-API/cron.log
+ *	*	*	*	*	NODE_ENV=production node /apps/analytics-api/cron "minute" >> /apps/analytics-api/cron.log
+ */10	*	*	*	*	NODE_ENV=production node /apps/analytics-api/cron "10 minutes" >> /apps/analytics-api/cron.log
+ 1	*	*	*	*	NODE_ENV=production node /apps/analytics-api/cron "hour" >> /apps/analytics-api/cron.log
+ 2	*/2	*	*	*	NODE_ENV=production node /apps/analytics-api/cron "2 hours" >> /apps/analytics-api/cron.log
+ 2	*/6	*	*	*	NODE_ENV=production node /apps/analytics-api/cron "6 hours" >> /apps/analytics-api/cron.log
+ 2	*/12	*	*	*	NODE_ENV=production node /apps/analytics-api/cron "12 hours" >> /apps/analytics-api/cron.log
+ 4	8	*	*	*	NODE_ENV=production node /apps/analytics-api/cron "day" >> /apps/analytics-api/cron.log
 
- 37	1	*	*	*	NODE_ENV=production node ~/FT-Analytics-API/clear_old_data.js 60 >> ~/FT-Analytics-API/cron.log
+ 37	1	*	*	*	NODE_ENV=production node /apps/analytics-api/cron/clear_old_data.js 60 >> /apps/analytics-api/cron.log
 ```

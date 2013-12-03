@@ -4,6 +4,10 @@
     <meta charset="utf-8">
     <title><%=chart_title %></title>
     <style>
+        html, body, svg {
+            margin: 0;
+            padding: 0;
+        }
         body {
             font: 0.9em sans-serif;
         }
@@ -32,8 +36,8 @@
 <script>
     /*global: d3*/
     var margin = {top: 20, right: 200, bottom: 30, left: 80},
-            width = 960 - margin.left - margin.right,
-            height = 500 - margin.top - margin.bottom,
+            width = ((window.innerWidth || (960 / 0.98)) * 0.98) - margin.left - margin.right,
+            height = ((window.innerHeight || (500 / 0.98)) * 0.98) - margin.top - margin.bottom,
 
             parseDate = d3.time.format("%Y%m%d").parse,
             color = d3.scale.category20(),
@@ -60,25 +64,33 @@
     d3.json("<%-api_url %>", function(error, data) {
         console.log(data.results);
 
-        var series = {};
+        var series = {},
+                countables;
 
         data.results.forEach(function (d) {
             var prefix = d3.keys(d.data).filter(function (col) {
-                        return !parseFloat(d.data[col]);
-                    }).map(function (col) {
-                                return d.data[col];
-                            }),
-                    values = d3.keys(d.data).filter(function (col) {
-                        return parseFloat(d.data[col]);
-                    }).map(function (col) {
-                                return {
-                                    name : col,
-                                    value : parseFloat(d.data[col])
-                                }
-                            });
+                return !parseFloat(d.data[col]);
+            }).map(function (col) {
+                        return d.data[col];
+                    });
 
-            values.forEach(function (val) {
-                var name = prefix.concat([val.name]).join(' / ');
+            countables = d3.keys(d.data).filter(function (col) {
+                return parseFloat(d.data[col]);
+            }).map(function (col) {
+                        return {
+                            name : col,
+                            value : parseFloat(d.data[col])
+                        }
+                    });
+
+            countables.forEach(function (val) {
+                var name;
+
+                if (countables.length === 1) {
+                    name = prefix.join(' / ');
+                } else {
+                    name = prefix.concat([val.name]).join(' / ');
+                }
 
                 if (!series.hasOwnProperty(name)) {
                     series[name] = [];
@@ -86,12 +98,11 @@
 
                 series[name].push({ date: (new Date(Date.parse(d.date))), value: val.value});
             });
-
         });
 
         //console.log(series);
         series = d3.map(series).entries();
-        console.log(series);
+        //console.log(series);
 
         color.domain(series.map(function(v) { return v.key; }));
 
@@ -125,7 +136,7 @@
                 .attr("y", 6)
                 .attr("dy", ".71em")
                 .style("text-anchor", "end")
-                .text("Count");
+                .text(countables.length === 1 ? countables[0].name : "Count");
 
         var plot = svg.selectAll(".plot")
                 .data(series)

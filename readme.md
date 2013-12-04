@@ -24,7 +24,7 @@ Running
   - [Memcache stuff](https://github.com/alevy/memjs#configuration)
 - API keys
   - Each processing module will let you know what environment variables or criteria it needs on startup.
-- Start the app `node app.js`
+- Start the app `node .`
 
 Deploying to production
 -----------------------

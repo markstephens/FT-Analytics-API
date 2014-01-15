@@ -19,6 +19,19 @@ footer {
     color: #666;
     font-size: 0.9em;
 }
+.panel {
+    height: 250px;
+    position: relative;
+}
+.panel .panel-body {
+    overflow: auto;
+    max-height: 100px;
+}
+.panel .panel-footer {
+    position: absolute;
+    bottom: 15px;
+    width: 100%;
+}
 .panel .panel-heading h2 {
     margin: 5px auto;
 }

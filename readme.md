@@ -66,6 +66,8 @@ Cron jobs
   2     */6     *       *       *       NODE_ENV=production node /apps/analytics-api/cron "6 hours" >> /apps/analytics-api/cron.log
   2     */12    *       *       *       NODE_ENV=production node /apps/analytics-api/cron "12 hours" >> /apps/analytics-api/cron.log
   4     8       *       *       *       NODE_ENV=production node /apps/analytics-api/cron "day" >> /apps/analytics-api/cron.log
+  # On Monday run again, as the iJento queue takes ages
+  7     15      *       *       1       NODE_ENV=production node /apps/analytics-api/cron "day" >> /apps/analytics-api/cron.log
 
   37    1       *       *       *       NODE_ENV=production node /apps/analytics-api/cron/clear_old_data.js 60 >> /apps/analytics-api/cron.log
 ```

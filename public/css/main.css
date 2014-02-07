@@ -27,6 +27,12 @@ footer {
     overflow: auto;
     max-height: 100px;
 }
+.panel.panel-expandable {
+    height: auto;
+}
+.panel.panel-expandable .panel-body {
+    max-height: none;
+}
 .panel .panel-footer {
     position: absolute;
     bottom: 15px;

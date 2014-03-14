@@ -18,7 +18,7 @@ var serviceController = (function () {
             if (err) {
                 res.send(404, err);
             } else {
-                var date = 1,
+                var date = 7,
                     query = {},
                     params = merge.object(req.query), // Take a copy if the object as we're about to remove the date
                     param_key,
@@ -151,7 +151,7 @@ var serviceController = (function () {
             delete req.query.groupby;
 
             api_url = analytics_api.build_url('api', api, req);
-            res.render('service/chart', { api_url: api_url, chart_title : params.chart_title || '', date : req.query.date || 1 });
+            res.render('service/chart', { api_url: api_url, chart_title : params.chart_title || '', date : req.query.date || 7 });
         });
     }
 

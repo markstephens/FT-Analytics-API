@@ -5,7 +5,7 @@
 <div class="form-group">
     <label for="date" class="col-lg-2 control-label">Rolling date</label>
     <div class="col-lg-1">
-        <input type="number" name="date" id="date" placeholder="1" value="<%=req.query.date %>" maxlength="2" style="width:4em;" />
+        <input type="number" name="date" id="date" placeholder="1" value="<%=req.query.date || 7 %>" maxlength="2" style="width:4em;" />
     </div>
     <div class="col-lg-pull-1">
         <p>days</p>

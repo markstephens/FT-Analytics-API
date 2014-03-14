@@ -11,7 +11,7 @@
 
     <form action="<%=req.path %>" method="get" class="form-horizontal">
 
-        <%-form_field('text', 'builder', 'chart_title', (req.query.chart_title ? req.query.chart_title : ''), {name: 'chart_title', label: 'Title', placeholder: 'Title', required: true, help: 'Give the Chart a name.'}) %>
+        <%-form_field('text', 'builder', 'chart_title', (req.query.chart_title ? req.query.chart_title : api.title), {name: 'chart_title', label: 'Title', placeholder: 'Title', required: true, help: 'Give the Chart a name.'}) %>
 
         <% include ../layout/_api_fields %>
 

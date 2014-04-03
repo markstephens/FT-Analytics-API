@@ -22,6 +22,14 @@ var homeController = (function () {
         });
     }
 
+    function csv_builder(req, res) {
+        API.findById(req.params[0], function (err, api) {
+            var csv_url = analytics_api.build_url('csv', api, req);
+
+            res.render('home/csv_builder', { title: "New CSV", api: api, csv_url: csv_url });
+        });
+    }
+
     function chart_builder(req, res) {
         API.findById(req.params[0], function (err, api) {
             var chart_url = analytics_api.build_url('chart', api, req);
@@ -33,6 +41,7 @@ var homeController = (function () {
     return {
         index : index,
         api_builder : api_builder,
+        csv_builder : csv_builder,
         chart_builder : chart_builder
     };
 }());

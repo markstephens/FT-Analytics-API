@@ -36,12 +36,14 @@ var routes = function (app) {
 
 
     // Serve an API.
-    app.get((new RegExp('/api/([0-9a-z]+)(.(json|jsonp))?')), serviceController.api);
+    app.get((new RegExp('/api/([0-9a-z]+)(.(json|jsonp))?')), serviceController.json);
     app.get((new RegExp('/chart/([0-9a-z]+)')), serviceController.chart);
+    app.get((new RegExp('/csv/([0-9a-z]+)')), serviceController.csv);
 
     // Home pages
     app.get((new RegExp('/api_builder/([0-9a-z]+)')), homeController.api_builder);
     app.get((new RegExp('/chart_builder/([0-9a-z]+)')), homeController.chart_builder);
+    app.get((new RegExp('/csv_builder/([0-9a-z]+)')), homeController.csv_builder);
     app.get('/', homeController.index);
 };
 

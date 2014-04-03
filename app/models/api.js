@@ -9,6 +9,7 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     Mixed = Schema.Types.Mixed,
     merge = require("../../util/merge"),
+    analytics_api = require("../../util/analytics_api"),
     timings = {
         'minute' : 60,
         '10 minutes' : (60 * 10),
@@ -132,6 +133,35 @@ APISchema.methods = {
             api.save(callback);
         });
 
+    },
+    getData : function (options, callback) {
+        var Data = mongoose.model('Data'),
+            api = this,
+
+            date = 7,
+            query = {},
+            param_key;
+
+        if (typeof options.date !== "undefined") {
+            if (options.date.trim() !== '') {
+                date = options.date;
+                delete options.date;
+            }
+        }
+
+        if (analytics_api.obLength(options.params) > 0) {
+            for (param_key in options.params) {
+                if (options.params.hasOwnProperty(param_key)) {
+                    if (options.params[param_key].trim() !== '') {
+                        query['data.' + param_key] = options.params[param_key];
+                    } else {
+                        delete options.params[param_key];
+                    }
+                }
+            }
+        }
+
+        Data.filterByRelativeDate(date).find(merge.object(query, { _api : api._id })).select("-_id -_api -__v").exec(callback);
     }
 };
 

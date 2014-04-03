@@ -1,0 +1,27 @@
+<% include ../layout/header %>
+
+<div class="page-header">
+    <h1><%=api.title %></h1>
+</div>
+
+<div class="panel panel-info panel-expandable">
+    <div class="panel-heading">
+        <h2>Configure your CSV</h2>
+    </div>
+
+    <form action="<%= csv_url %>" method="get" class="form-horizontal">
+
+        <%-form_field('text', 'builder', 'csv_title', (req.query.csv_title ? req.query.csv_title : api.title), {name: 'csv_title', label: 'Title', placeholder: 'Title', required: true, help: 'Give the CSV a name.'}) %>
+
+        <% include ../layout/_api_fields %>
+
+        <div class="col-lg-offset-2">
+            <p><button class="btn btn-success btn-sm">Download CSV</button></p>
+        </div>
+
+    </form>
+</div>
+
+<p><a href="/" class="btn btn-default">Back</a></p>
+
+<% include ../layout/footer %>

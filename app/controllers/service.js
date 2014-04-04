@@ -227,7 +227,7 @@ var serviceController = (function () {
             delete req.query.autogroup;
             delete req.query.groupby;
 
-            api_url = analytics_api.build_url('json', api, req);
+            api_url = analytics_api.build_url('api', api, req);
             res.render('service/chart', { api_url: api_url, chart_title : params.chart_title || '', date : req.query.date || 7 });
         });
     }

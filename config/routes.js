@@ -36,7 +36,7 @@ var routes = function (app) {
 
 
     // Serve an API.
-    app.get((new RegExp('/(api|json)/([0-9a-z]+)(.(json|jsonp))?')), serviceController.json);
+    app.get((new RegExp('/api/([0-9a-z]+)(.(json|jsonp))?')), serviceController.json);
     app.get((new RegExp('/chart/([0-9a-z]+)')), serviceController.chart);
     app.get((new RegExp('/csv/([0-9a-z]+)')), serviceController.csv);
 

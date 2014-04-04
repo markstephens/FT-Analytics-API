@@ -21,7 +21,7 @@ var serviceController = (function () {
             }
 
             var groupings = [],
-                date = params.date;
+                date = params.date || 7;
 
             // Remove predefined params from Mongo query
             internal_params.forEach(function (p) {
@@ -97,7 +97,7 @@ var serviceController = (function () {
                 return res.send(404, err);
             }
 
-            var date = params.date;
+            var date = params.date || 7;
 
             // Remove predefined params from Mongo query
             internal_params.forEach(function (p) {

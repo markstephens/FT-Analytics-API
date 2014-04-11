@@ -30,7 +30,7 @@ var serviceController = (function () {
                 }
             });
 
-            api.getData(params, function (error, data) {
+            api.getData(date, params, function (error, data) {
                 if (error) {
                     return res.send(500, error);
                 }
@@ -106,7 +106,7 @@ var serviceController = (function () {
                 }
             });
 
-            api.getData(params, function (error, data) {
+            api.getData(date, params, function (error, data) {
                 if (error) {
                     return res.send(500, error);
                 }

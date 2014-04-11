@@ -134,32 +134,26 @@ APISchema.methods = {
         });
 
     },
-    getData : function (options, callback) {
+    getData : function (date, options, callback) {
         var Data = mongoose.model('Data'),
             api = this,
 
-            date = 7,
             query = {},
             param_key;
 
-        if (typeof options.date !== "undefined") {
-            if (options.date.trim() !== '') {
-                date = options.date;
-                delete options.date;
-            }
-        }
-
-        if (analytics_api.obLength(options.params) > 0) {
-            for (param_key in options.params) {
-                if (options.params.hasOwnProperty(param_key)) {
-                    if (options.params[param_key].trim() !== '') {
-                        query['data.' + param_key] = options.params[param_key];
+        if (analytics_api.obLength(options) > 0) {
+            for (param_key in options) {
+                if (options.hasOwnProperty(param_key)) {
+                    if (options[param_key].trim() !== '') {
+                        query['data.' + param_key] = options[param_key];
                     } else {
-                        delete options.params[param_key];
+                        delete options[param_key];
                     }
                 }
             }
         }
+
+        console.log(date, query);
 
         Data.filterByRelativeDate(date).find(merge.object(query, { _api : api._id })).select("-_id -_api -__v").exec(callback);
     }

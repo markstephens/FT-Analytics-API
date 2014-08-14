@@ -27,7 +27,7 @@ var iJentoProcessor = (function () {
     }
 
     function can_process(data, callback) {
-        if (/https:\/\/ft\.ijento\.com\/query\/app/.test(url) || /https:\/\/ft.ijento.com\/si\/core\/schedules\/(ftprod|fttest)\/entries\//.test(url)) {
+        if (/https:\/\/ft\.ijento\.com\/query\/app/.test(data.url) || /https:\/\/ft.ijento.com\/si\/core\/schedules\/(ftprod|fttest)\/entries\//.test(data.url)) {
             parseString(data.data, function (err, result) {
                 if (result.hasOwnProperty('results')) {
                     if (result.results.hasOwnProperty('column-data') && result.results.hasOwnProperty('row')) {

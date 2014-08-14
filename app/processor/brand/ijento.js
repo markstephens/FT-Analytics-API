@@ -17,7 +17,7 @@ var iJentoProcessor = (function () {
     }
 
     function can_get(url) {
-        if (/https:\/\/ft\.ijento\.com\/query\/app/.test(url) && config.processors.ijento.auth) {
+        if ((/https:\/\/ft\.ijento\.com\/query\/app/.test(url) || /https:\/\/ft.ijento.com\/si\/core\/schedules\/(ftprod|fttest)\/entries\//.test(url)) && config.processors.ijento.auth) {
             return {
                 auth: config.processors.ijento.auth
             };
@@ -27,7 +27,7 @@ var iJentoProcessor = (function () {
     }
 
     function can_process(data, callback) {
-        if (/https:\/\/ft\.ijento\.com\/query\/app/.test(data.url)) {
+        if (/https:\/\/ft\.ijento\.com\/query\/app/.test(url) || /https:\/\/ft.ijento.com\/si\/core\/schedules\/(ftprod|fttest)\/entries\//.test(url)) {
             parseString(data.data, function (err, result) {
                 if (result.hasOwnProperty('results')) {
                     if (result.results.hasOwnProperty('column-data') && result.results.hasOwnProperty('row')) {

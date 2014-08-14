@@ -74,7 +74,7 @@ var APISchema = new Schema({
  */
 APISchema.path('title').required(true);
 APISchema.path('dataUrl').required(true).validate(function (url) {
-    return (/^(https?:\/\/)?([\da-z\.\-]+)(\.([a-z\.]{2,6}))?(:\d+)?([\/\.\w])+(\?([\/\w \.\-%&=]*))?$/).test(url.trim());
+    return (/^(https?:\/\/)?([\da-z\.\-]+)(\.([a-z\.]{2,6}))?(:\d+)?([\/\.\w\-])+(\?([\/\w \.\-%&=]*))?$/).test(url.trim());
 }, 'Data url must be a valid URL.');
 
 /**
